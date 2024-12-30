@@ -1,5 +1,5 @@
 INICIAR EL PROYECTO http://localhost:3000/
-cd Frontend/client
+cd client
 npm start
 -------------------------------------------------------------
 GITHUB(stage,commit y push)
