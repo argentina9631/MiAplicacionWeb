@@ -1,12 +1,11 @@
-//import './env';
 import React from 'react';
 import './App.css';
-import Login from './components/Login';
+import LoginForm from './components/LoginForm'; // Componente del formulario de login
 
 function App() {
   return (
-    <div>
-      <Login />
+    <div className="App">
+      <LoginForm />
     </div>
   );
 }
