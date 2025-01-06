@@ -1,10 +1,9 @@
-import React from 'react';
-import './App.css';
-import LoginForm from './components/LoginForm'; // Componente del formulario de login
+import React from "react";
+import LoginForm from "./components/LoginForm";
 
 function App() {
   return (
-    <div className="App">
+    <div>
       <LoginForm />
     </div>
   );
