@@ -12,6 +12,12 @@ class User {
       'WHERE p.email = ?',
       [email]
     );
+
+    // Si no se encuentra el usuario, retorna null
+    if (rows.length === 0) {
+      return null;
+    }
+
     return rows[0]; // Retorna el primer usuario encontrado
   }
 
@@ -27,6 +33,12 @@ class User {
     );
 
     return result.insertId; // Retorna el ID del usuario insertado
+  }
+
+  // Verificar la contraseña
+  static async verifyPassword(storedHash, password) {
+    // Comparar la contraseña ingresada con la contraseña hasheada almacenada
+    return await bcrypt.compare(password, storedHash);
   }
 }
 

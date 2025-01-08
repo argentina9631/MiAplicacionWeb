@@ -1,7 +1,11 @@
 const express = require('express');
-const { login } = require('../controllers/userController');
 const router = express.Router();
+const userController = require('../controllers/userController');
 
-router.post('/login', login);
+console.log(userController);  // Agrega esta línea para ver el objeto
 
+// Ruta para login
+router.post('/login', userController.login);
+
+// Exportar las rutas
 module.exports = router;
