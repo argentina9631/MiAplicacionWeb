@@ -4,16 +4,36 @@ import "./LoginForm.css";
 const LoginForm = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState(null);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Email:", email, "Password:", password);
+    setError(null);
+
+    try {
+      const response = await fetch("http://localhost:3000/api/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password }),
+      });
+
+      const data = await response.json();
+      if (!response.ok) {
+        setError(data.error || "Error desconocido");
+      } else {
+        alert("Inicio de sesión exitoso");
+        console.log("Token:", data.token);
+      }
+    } catch (error) {
+      setError("Error al conectar con el servidor");
+    }
   };
 
   return (
     <div className="login-container">
       <form className="login-form" onSubmit={handleSubmit}>
         <h2>Iniciar Sesión</h2>
+        {error && <p style={{ color: "red" }}>{error}</p>}
         <label htmlFor="email">Email:</label>
         <input
           type="email"
