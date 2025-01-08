@@ -1,18 +1,18 @@
-const express = require("express");
-const cors = require("cors");
-const userRoutes = require('./routes/userRoutes');
+const express = require('express');
+const cors = require('cors');
+const bodyParser = require('body-parser');
+const userRoutes = require('./routes/userRoutes');  // Asegúrate de que la ruta sea correcta
 
 const app = express();
-const PORT = 3000;
 
-// Middleware
-app.use(cors({ origin: "http://localhost:3001" }));
-app.use(express.json());
+app.use(cors());  // Permitir solicitudes desde otros orígenes
+app.use(bodyParser.json());  // Analizar cuerpos JSON
 
-// Routes
-app.use("/api", userRoutes);
+// Usar las rutas de usuario
+app.use('/api/users', userRoutes);  // Configuración de la ruta de usuarios
 
-// Start the server
-app.listen(PORT, () => {
-  console.log(`Servidor corriendo en http://localhost:${PORT}`);
+// Puerto de escucha
+const port = 3000;
+app.listen(port, () => {
+  console.log(`Servidor corriendo en el puerto ${port}`);
 });
