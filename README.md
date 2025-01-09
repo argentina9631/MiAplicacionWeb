@@ -2,12 +2,12 @@ PROYECTO http://localhost:3001/
 ---------------------------------------------------------------------------------
 INICIALIZAR BACKEND CON:
 
-$env:NODE_SKIP_PLATFORM_CHECK=1 -->(solo la primera vez luego de prender la pc) 
+$env:NODE_SKIP_PLATFORM_CHECK=1 -->(cada vez q cerramos la consola del backend) 
 node app.js
 ---------------------------------------------------------------------------------
 INICIAR FRONTEND CON:
 
-$env:NODE_SKIP_PLATFORM_CHECK=1 -->(solo la primera vez luego de prender la pc) 
+$env:NODE_SKIP_PLATFORM_CHECK=1 -->(cada vez q cerramos la consola del frontend) 
 npm start
 ---------------------------------------------------------------------------------
 GITHUB(stage,commit y push)
