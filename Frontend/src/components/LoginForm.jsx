@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "./LoginForm.css";
 
-const LoginForm = () => {
+const LoginForm = ({ onLogin }) => {  // Recibimos la función onLogin como prop
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
@@ -22,6 +22,8 @@ const LoginForm = () => {
       if (!response.ok) {
         setError(data.error || "Error desconocido");
       } else {
+        // Llamamos a la función onLogin pasándole el token y el rol
+        onLogin(data.token, data.rol); 
         alert("Inicio de sesión exitoso");
         console.log("Token:", data.token);
       }
