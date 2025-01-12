@@ -11,4 +11,16 @@ const pool = mysql.createPool({
   queueLimit: 0,
 });
 
+// Verificar la conexión al crear el pool
+(async () => {
+  try {
+    const connection = await pool.getConnection();
+    console.log('Conexión a la base de datos en Clever Cloud exitosa.');
+    connection.release(); // Libera la conexión de vuelta al pool
+  } catch (err) {
+    console.error('Error al conectar a la base de datos:', err);
+  }
+})();
+
 module.exports = pool;
+
