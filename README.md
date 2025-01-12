@@ -1,4 +1,5 @@
-PROYECTO http://localhost:3001/
+PROYECTO https://miaplicacionweb.vercel.app/
+(http://localhost:3001/)
 ---------------------------------------------------------------------------------
 INICIALIZAR BACKEND CON:
 
@@ -28,6 +29,7 @@ git branch
 
 Asegúrate de estar en la rama donde quieres subir los cambios. Si no, cámbiala con:
 git checkout <nombre_de_la_rama>
+(rama:master)
 
 Agrega los cambios:
 git add .
@@ -37,3 +39,4 @@ git commit -m "Descripción del cambio"
 
 Sube los cambios al repositorio:
 git push origin <nombre_de_la_rama>
+(rama:master)
