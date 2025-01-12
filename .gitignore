@@ -1,14 +1,24 @@
-# Ignorar dependencias de Node.js
+# Dependencias de Node.js
 node_modules/
 
-# Ignorar compilaciones y archivos generados automáticamente
+# Compilaciones y archivos generados automáticamente
 build/
 dist/
 
-# Ignorar configuraciones locales
+# Configuraciones locales y sensibles
 .env
+
+# Archivos del sistema y específicos del entorno
 .DS_Store
 Thumbs.db
 
-# Ignorar logs
+# Logs
 *.log
+
+# Configuración de Clever Cloud
+/.clever.json
+/.cleverrc
+
+# Otros archivos ignorables
+*.bak
+*.tmp

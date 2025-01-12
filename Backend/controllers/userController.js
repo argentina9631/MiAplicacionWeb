@@ -2,11 +2,12 @@ const crypto = require('crypto'); // Importa crypto para manejar SHA-256
 const pool = require('../config/db'); // Ajusta la ruta según tu estructura de carpetas
 
 const login = async (req, res) => {
-  console.log("Request body:", req.body); // Para verificar los datos enviados
+  console.log("Request body recibido:", req.body); // Log para depuración
   const { email, password } = req.body;
 
+  // Validar datos obligatorios
   if (!email || !password) {
-    console.log("Faltan datos obligatorios"); // Log adicional
+    console.error("Faltan datos obligatorios en el request");
     return res.status(400).json({ error: 'Email y contraseña son obligatorios' });
   }
 
@@ -18,33 +19,46 @@ const login = async (req, res) => {
       WHERE p.email = ?
     `;
 
-    console.log('Consulta SQL ejecutada:', query); // Log de la consulta
+    console.log('Ejecutando consulta SQL:', query); // Log para depuración
     const [result] = await pool.query(query, [email]);
 
-    console.log('Resultados de la consulta:', result); // Log de los resultados obtenidos
+    console.log('Resultados obtenidos de la consulta:', result); // Log para ver los resultados
 
+    // Verificar si se encontró el usuario
     if (result.length === 0) {
-      console.log("Usuario no encontrado con el email proporcionado"); // Log adicional
+      console.warn("Usuario no encontrado con el email proporcionado");
       return res.status(400).json({ error: 'Email o contraseña incorrectos' });
     }
 
     const user = result[0];
-    console.log("Usuario encontrado:", user); // Log para ver el usuario encontrado
+    console.log("Usuario encontrado:", user); // Log del usuario encontrado
 
     // Generar el hash de la contraseña ingresada con SHA-256
     const hashedPassword = crypto.createHash('sha256').update(password).digest('hex');
+    console.log("Hash generado para la contraseña ingresada:", hashedPassword);
 
+    // Comparar el hash generado con el almacenado en la base de datos
     if (hashedPassword !== user.contrasena_hash) {
-      console.log("Contraseña incorrecta"); // Log para contraseña no válida
+      console.warn("Contraseña incorrecta para el usuario proporcionado");
       return res.status(400).json({ error: 'Email o contraseña incorrectos' });
     }
 
-    console.log("Login exitoso"); // Log para login exitoso
-    res.status(200).json({ message: 'Login exitoso', user });
+    console.log("Login exitoso para el usuario:", user.nombre_persona);
+
+    // Responder con éxito y datos básicos del usuario
+    res.status(200).json({
+      message: 'Login exitoso',
+      user: {
+        id_usuario: user.id_usuario,
+        nombre_usuario: user.nombre_usuario,
+        nombre_persona: user.nombre_persona,
+        email: user.email,
+      },
+    });
 
   } catch (error) {
-    console.error('Error capturado:', error); // Log para errores capturados
-    res.status(500).json({ error: 'Error al consultar el usuario' });
+    console.error('Error al procesar el login:', error);
+    res.status(500).json({ error: 'Error interno del servidor' });
   }
 };
 
