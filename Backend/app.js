@@ -12,7 +12,8 @@ app.use(bodyParser.json());  // Analizar cuerpos JSON
 app.use('/api/users', userRoutes);  // Configuración de la ruta de usuarios
 
 // Puerto de escucha
-const port = 3000;
-app.listen(port, () => {
-  console.log(`Servidor corriendo en el puerto ${port}`);
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`Servidor corriendo en el puerto ${PORT}`);
 });
+
