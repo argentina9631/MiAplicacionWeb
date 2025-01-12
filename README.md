@@ -28,15 +28,15 @@ git branch
 (presionar q para salir)
 
 Asegúrate de estar en la rama donde quieres subir los cambios. Si no, cámbiala con:
-git checkout <nombre_de_la_rama>
+git checkout master
 (rama:master)
 
 Agrega los cambios:
 git add .
 
 Realiza un commit:
-git commit -m "Descripción del cambio"
+git commit -m "cambio"
 
 Sube los cambios al repositorio:
-git push origin <nombre_de_la_rama>
+git push origin master
 (rama:master)
