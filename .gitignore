@@ -14,11 +14,14 @@ Thumbs.db
 
 # Logs
 *.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
 
 # Configuración de Clever Cloud
 /.clever.json
 /.cleverrc
 
-# Otros archivos ignorables
-*.bak
-*.tmp
+# Configuración específica de tu editor
+.vscode/
+.idea/
