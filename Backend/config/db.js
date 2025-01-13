@@ -9,6 +9,7 @@ const pool = mysql.createPool({
   waitForConnections: true,
   connectionLimit: 10, // Máximo de conexiones simultáneas
   queueLimit: 0,
+  connectTimeout: 10000, // Tiempo de espera máximo en ms para conectarse
 });
 
 // Verificar la conexión al crear el pool
@@ -18,9 +19,17 @@ const pool = mysql.createPool({
     console.log('Conexión a la base de datos en Clever Cloud exitosa.');
     connection.release(); // Libera la conexión de vuelta al pool
   } catch (err) {
-    console.error('Error al conectar a la base de datos:', err);
+    console.error('Error al conectar a la base de datos:', err.code, err.message);
   }
 })();
 
-module.exports = pool;
+// Manejador para reconexión manual en caso de errores
+pool.on('error', (err) => {
+  console.error('Error en el pool de conexiones:', err.code, err.message);
+  if (err.code === 'PROTOCOL_CONNECTION_LOST') {
+    console.error('Conexión perdida. Intentando reconectar...');
+    // Aquí puedes implementar lógica para reiniciar el pool o alertar al usuario
+  }
+});
 
+module.exports = pool;
