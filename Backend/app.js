@@ -8,14 +8,17 @@ const app = express();
 // Configuración de CORS
 const allowedOrigins = [
   'http://localhost:3000', // Origen local para desarrollo
-  'https://mi-frontend.vercel.app', // Reemplaza con la URL real de tu frontend en Vercel
+  'http://localhost:3001', // Origen local alternativo
+  'https://miaplicacionweb.vercel.app', // URL de tu aplicación en Vercel
 ];
+
 app.use(
   cors({
     origin: function (origin, callback) {
       if (!origin || allowedOrigins.includes(origin)) {
         callback(null, true);
       } else {
+        console.error(`Origen no permitido por CORS: ${origin}`);
         callback(new Error('No permitido por CORS'));
       }
     },
@@ -25,6 +28,12 @@ app.use(
 
 // Analizar cuerpos JSON
 app.use(bodyParser.json());
+
+// Middleware para depuración (opcional, solo para verificar orígenes)
+app.use((req, res, next) => {
+  console.log(`Solicitud recibida de origen: ${req.headers.origin}`);
+  next();
+});
 
 // Usar las rutas de usuario
 app.use('/api/users', userRoutes); // Ruta base para las solicitudes relacionadas con usuarios
