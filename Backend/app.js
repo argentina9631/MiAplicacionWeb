@@ -53,7 +53,7 @@ app.use((err, req, res, next) => {
 });
 
 // Puerto de escucha
-const PORT = process.env.PORT || 3000; // Se obtiene el puerto desde el archivo .env o se usa el puerto 3000 como predeterminado
+const PORT = process.env.PORT || 8080; // Se obtiene el puerto desde clever cloud capazzz
 app.listen(PORT, () => {
   console.log(`Servidor corriendo en el puerto ${PORT}`);
 });
