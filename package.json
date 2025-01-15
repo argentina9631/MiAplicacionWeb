@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "PROYECTO https://miaplicacionweb.vercel.app/",
   "scripts": {
-    "start": "npm run start-backend & npm run start-frontend",
+    "start": "cd Backend && npm start",
     "start-backend": "cd Backend && npm start",
     "start-frontend": "cd Frontend && npm start",
     "build-frontend": "cd Frontend && npm run build",
