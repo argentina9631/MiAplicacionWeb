@@ -40,3 +40,15 @@ git commit -m "cambio"
 Sube los cambios al repositorio:
 git push origin master
 (rama:master)
+-------------------------------------------------------------------------------------
+Para iniciar el frontend y backend simultáneamente desde la raíz:
+npm start
+
+Para solo iniciar el frontend:
+npm run start-frontend
+
+Para solo iniciar el backend:
+npm run start-backend
+
+Para compilar el frontend (cuando quieras desplegarlo en producción):
+npm run build-frontend
