@@ -1,0 +1,83 @@
+/* Estilo general para el fondo */
+body {
+  margin: 0;
+  padding: 0;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-image: url("../../public/images/imagen1login.webp"); /* Ruta desde public */
+  background-size: cover; /* La imagen ocupa toda la pantalla */
+  background-position: center; /* Centrar la imagen */
+  background-repeat: no-repeat; /* Evitar que se repita */
+}
+
+/* Contenedor del formulario */
+.login-container {
+  max-width: 500px; /* Ajustado para que sea más grande */
+  width: 90%; /* Adaptable a diferentes tamaños de pantalla */
+  margin: 20px auto;
+  padding: 40px; /* Espacio interno */
+  background-color: rgba(255, 255, 255, 0.9); /* Fondo blanco semitransparente */
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Sombra para destacar */
+  font-family: Arial, sans-serif;
+  text-align: center; /* Centrar contenido */
+}
+
+/* Título del formulario */
+.login-container h2 {
+  font-size: 24px;
+  margin-bottom: 25px;
+  color: #333;
+}
+
+/* Espaciado entre los elementos */
+.login-container form div {
+  margin-bottom: 20px;
+  text-align: left; /* Alinear etiquetas a la izquierda */
+}
+
+/* Etiquetas */
+.login-container label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+  color: #333;
+}
+
+/* Campos de entrada */
+.login-container input {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 16px;
+  box-sizing: border-box; /* Asegura que el padding no afecte al ancho */
+}
+
+/* Botón de envío */
+.login-container button {
+  width: 100%;
+  padding: 15px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  font-size: 18px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+/* Hover en el botón */
+.login-container button:hover {
+  background-color: #0056b3;
+}
+
+/* Mensaje de error */
+.login-container p {
+  color: red;
+  font-size: 14px;
+  margin-bottom: 20px;
+}
