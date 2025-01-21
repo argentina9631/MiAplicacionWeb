@@ -4,12 +4,11 @@ import axios from 'axios';
 // Detectar si estamos en producción o desarrollo
 const baseURL =
   process.env.NODE_ENV === 'development'
-    ? 'bpbegxzvzbakl8am10mx-mysql.services.clever-cloud.com/api' // URL del backend en Clever Cloud
-    : 'http://localhost:3000/api'; // Desarrollo local
+    ? 'http://localhost:8080/api' // URL del backend en desarrollo (puedes ajustar el puerto si es necesario)
+    : 'https://app-e1cc2c91-dfc6-49c5-8a1c-6a1907e248e3.cleverapps.io/api'; // URL del backend en Clever Cloud (producción)
 
 const api = axios.create({
   baseURL, // URL base configurada dinámicamente
 });
 
 export default api;
-
