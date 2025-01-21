@@ -28,6 +28,11 @@ app.use((req, res, next) => {
 // Rutas de la aplicación
 app.use('/api/users', userRoutes); // Ruta base para usuarios
 
+// Ruta predeterminada para la raíz (soluciona el "Cannot GET /")
+app.get('/', (req, res) => {
+  res.send('¡Backend funcionando!');
+});
+
 // Manejo de errores generales
 app.use((err, req, res, next) => {
   console.error(err.message);
