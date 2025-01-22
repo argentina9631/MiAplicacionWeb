@@ -18,7 +18,7 @@ const Dashboard = () => {
     localStorage.removeItem('token');
     
     // Redirigir a la ruta personalizada, en este caso, la ruta de inicio
-    window.location.href = 'http://localhost:3001';  // Redirigir al inicio de sesión externo
+    window.location.href = 'http://localhost:8080';  // Redirigir al inicio de sesión externo
   };
 
   return (
