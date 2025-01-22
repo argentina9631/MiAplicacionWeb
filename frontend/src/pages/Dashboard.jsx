@@ -1,32 +1,19 @@
-import React, { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+//frontend/src/pages/Dashboard
+import React from 'react';
 
-const Dashboard = () => {
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    // Verificar si el token está en el localStorage
-    const token = localStorage.getItem('token');
-    if (!token) {
-      // Si no hay token, redirigir al login
-      navigate('/');
-    }
-  }, [navigate]);
-
+function Dashboard() {
   const handleLogout = () => {
-    // Eliminar el token de localStorage
     localStorage.removeItem('token');
-    
-    // Redirigir a la ruta personalizada, en este caso, la ruta de inicio
-    window.location.href = 'https://app-e1cc2c91-dfc6-49c5-8a1c-6a1907e248e3.cleverapps.io/api/';  // Redirigir al inicio de sesión externo
+    window.location.href = '/';
   };
 
   return (
     <div>
-      <h1>Bienvenido a la pantalla principal</h1>
+      <h1>Bienvenido al Dashboard</h1>
       <button onClick={handleLogout}>Cerrar sesión</button>
     </div>
   );
-};
+}
 
 export default Dashboard;
+

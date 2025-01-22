@@ -1,64 +1,55 @@
-import React, { useState } from "react";
-import "./LoginForm.css";
+//frontend/src/components/LoginForm
+import React, { useState } from 'react';
 
-const LoginForm = ({ onLogin }) => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState(null);
+function LoginForm() {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
 
-  const handleSubmit = async (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
-    setError(null);
-
     try {
-      const response = await fetch("https://app-e1cc2c91-dfc6-49c5-8a1c-6a1907e248e3.cleverapps.io/api/users/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/users/login`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
         body: JSON.stringify({ email, password }),
       });
 
       const data = await response.json();
-      if (!response.ok) {
-        setError(data.error || "Error desconocido");
+      if (response.ok) {
+        localStorage.setItem('token', data.token);
+        window.location.href = '/dashboard';
       } else {
-        onLogin(data.token, data.rol);
-        alert("Inicio de sesión exitoso");
-        console.log("Token:", data.token);
+        setErrorMessage(data.message || 'Error al iniciar sesión');
       }
     } catch (error) {
-      setError("Error al conectar con el servidor");
+      setErrorMessage('Error de conexión con el servidor');
     }
   };
 
   return (
-    <div className="login-container">
-      <form onSubmit={handleSubmit}>
-        <h2>Iniciar Sesión</h2>
-        {error && <p>{error}</p>}
-        <div>
-          <label htmlFor="email">Email:</label>
-          <input
-            type="email"
-            id="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
-        </div>
-        <div>
-          <label htmlFor="password">Contraseña:</label>
-          <input
-            type="password"
-            id="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
-        </div>
-        <button type="submit">Login</button>
-      </form>
-    </div>
+    <form onSubmit={handleLogin}>
+      <h2>Iniciar Sesión</h2>
+      {errorMessage && <p className="error">{errorMessage}</p>}
+      <input
+        type="email"
+        placeholder="Correo electrónico"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+        required
+      />
+      <input
+        type="password"
+        placeholder="Contraseña"
+        value={password}
+        onChange={(e) => setPassword(e.target.value)}
+        required
+      />
+      <button type="submit">Login</button>
+    </form>
   );
-};
+}
 
 export default LoginForm;

@@ -1,3 +1,4 @@
+//backend/app.js
 require('dotenv').config(); // Carga las variables de entorno desde el archivo .env
 
 const express = require('express');
