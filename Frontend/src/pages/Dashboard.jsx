@@ -18,7 +18,7 @@ const Dashboard = () => {
     localStorage.removeItem('token');
     
     // Redirigir a la ruta personalizada, en este caso, la ruta de inicio
-    window.location.href = 'http://localhost:8080';  // Redirigir al inicio de sesión externo
+    window.location.href = 'https://app-e1cc2c91-dfc6-49c5-8a1c-6a1907e248e3.cleverapps.io/api/';  // Redirigir al inicio de sesión externo
   };
 
   return (
