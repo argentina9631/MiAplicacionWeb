@@ -4,7 +4,8 @@
   "description": "Backend de MiAplicacionWeb",
   "main": "app.js",
   "scripts": {
-    "start": "node app.js"
+    "start": "node app.js",
+    "postinstall": "echo Postinstall script ejecutado"
   },
   "keywords": [],
   "author": "",
@@ -16,8 +17,7 @@
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
     "jsonwebtoken": "^9.0.2",
-    "mysql2": "^3.12.0",
-    "postinstall": "npm install"
+    "mysql2": "^3.12.0"
   },
   "engines": {
     "node": "16.x"

@@ -19,5 +19,7 @@
   "bugs": {
     "url": "https://github.com/argentina9631/MiAplicacionWeb/issues"
   },
-  "homepage": "https://github.com/argentina9631/MiAplicacionWeb#readme"
+  "homepage": "https://github.com/argentina9631/MiAplicacionWeb#readme",
+  "devDependencies": {},
+  "dependencies": {}
 }
