@@ -1,4 +1,4 @@
-//frontend/src/App.js
+// frontend/src/App.js
 import React, { useEffect, useState } from 'react';
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 import LoginForm from './components/LoginForm';
@@ -27,7 +27,8 @@ function App() {
         } else {
           setIsAuthenticated(false);
         }
-      } catch {
+      } catch (error) {
+        console.error("Error verifying token:", error);
         setIsAuthenticated(false);
       }
     };
@@ -40,11 +41,11 @@ function App() {
       <Routes>
         <Route
           path="/"
-          element={!isAuthenticated ? <LoginForm /> : <Navigate to="/dashboard" />}
+          element={!isAuthenticated ? <LoginForm /> : <Navigate to="/dashboard" replace />}
         />
         <Route
           path="/dashboard"
-          element={isAuthenticated ? <Dashboard /> : <Navigate to="/" />}
+          element={isAuthenticated ? <Dashboard /> : <Navigate to="/" replace />}
         />
       </Routes>
     </Router>

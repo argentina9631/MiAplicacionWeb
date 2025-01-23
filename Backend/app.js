@@ -10,7 +10,7 @@ const app = express();
 
 // Configuración de CORS
 const corsOptions = {
-  origin: '*', // Acepta cualquier origen temporalmente
+  origin: process.env.CLIENT_URL || '*', // Usa la URL del cliente desde .env
   credentials: true,
 };
 
@@ -34,10 +34,15 @@ app.get('/', (req, res) => {
   res.send('¡Backend funcionando!');
 });
 
+// Manejo de errores para rutas inexistentes (404)
+app.use((req, res, next) => {
+  res.status(404).json({ message: 'Ruta no encontrada' });
+});
+
 // Manejo de errores generales
 app.use((err, req, res, next) => {
-  console.error(err.message);
-  res.status(500).json({ message: 'Error interno del servidor' });
+  console.error(`[Error] ${err.message}`, err.stack);
+  res.status(err.status || 500).json({ message: err.message || 'Error interno del servidor' });
 });
 
 // Puerto de escucha
