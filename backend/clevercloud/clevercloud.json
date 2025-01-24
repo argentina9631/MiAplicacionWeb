@@ -1,0 +1,16 @@
+{
+    "deploy": {
+      "type": "node",
+      "branch": "main"
+    },
+    "apps": [
+      {
+        "name": "MiAplicacionWeb-backend",
+        "env": {
+          "NODE_ENV": "production",
+          "MYSQL_ADDON_URI": "@{MYSQL_ADDON_URI}"
+        }
+      }
+    ]
+  }
+  
