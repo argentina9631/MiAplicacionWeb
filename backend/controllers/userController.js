@@ -1,6 +1,6 @@
 // backend/controllers/userController.js
 const crypto = require('crypto'); // Importa crypto para manejar SHA-256
-const jwt = require('jsonwebtoken'); // Importa jsonwebtoken para generar el JWT
+const jwt = require('jsonwebtoken'); // Importa jwt para generar el token
 const pool = require('../config/db'); // Ajusta la ruta según tu estructura de carpetas
 
 const login = async (req, res) => {
@@ -47,23 +47,23 @@ const login = async (req, res) => {
 
     console.log("Login exitoso para el usuario:", user.nombre_persona);
 
-    // Generar el JWT con la información del usuario
+    // Generar un token JWT
     const token = jwt.sign(
-      { id: user.id_usuario, id_rol: user.id_rol }, // Datos a incluir en el payload
-      process.env.JWT_SECRET, // Usar el JWT_SECRET del archivo .env
-      { expiresIn: '1h' } // Expiración del token, 1 hora en este caso
+      { id: user.id_usuario, id_rol: user.id_rol },
+      'clave_secreta', // Usa una clave secreta para firmar el token
+      { expiresIn: '1h' } // El token expirará en 1 hora
     );
 
-    // Responder con el JWT
+    // Responder con éxito y el token
     res.status(200).json({
       message: 'Login exitoso',
+      token, // Devuelve el token JWT
       user: {
         id_usuario: user.id_usuario,
         nombre_usuario: user.nombre_usuario,
         nombre_persona: user.nombre_persona,
         email: user.email,
       },
-      token, // Enviar el token generado
     });
 
   } catch (error) {
@@ -75,3 +75,4 @@ const login = async (req, res) => {
 module.exports = {
   login,
 };
+

@@ -1,9 +1,10 @@
+// backend/App.js
 require('dotenv').config(); // Carga las variables de entorno desde el archivo .env
 
 const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
-const userRoutes = require('./routes/userRoutes'); // Asegúrate de que el archivo exista y esté bien configurado
+const userRoutes = require('./routes/userRoutes'); // Asegúrate de que el archivo existe y está bien configurado
 
 const app = express();
 
@@ -15,7 +16,6 @@ const allowedOrigins = [
 
 const corsOptions = {
   origin: (origin, callback) => {
-    // Permite solicitudes de orígenes permitidos o sin origen (por ejemplo, Postman)
     if (allowedOrigins.includes(origin) || !origin) {
       callback(null, true);
     } else {

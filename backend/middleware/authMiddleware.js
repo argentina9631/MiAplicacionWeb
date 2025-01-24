@@ -1,32 +1,27 @@
 // backend/middleware/authMiddleware.js
 const jwt = require('jsonwebtoken');
-const { permisos } = require('../config/roles');
 
+// Middleware para verificar el token
 const verificarToken = (req, res, next) => {
-    const token = req.headers.authorization && req.headers.authorization.split(' ')[1]; // Extraer el token
-    if (!token) {
-        return res.status(403).json({ mensaje: 'Token no proporcionado' });
+  // Obtener el token del header Authorization
+  const token = req.headers.authorization && req.headers.authorization.split(' ')[1]; 
+
+  if (!token) {
+    return res.status(403).json({ mensaje: 'Token no proporcionado' });
+  }
+
+  // Verificar el token con la clave secreta desde las variables de entorno
+  jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
+    if (err) {
+      return res.status(401).json({ mensaje: 'Token inválido' });
     }
 
-    jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => { // Usar JWT_SECRET del archivo .env
-        if (err) {
-            return res.status(401).json({ mensaje: 'Token inválido' });
-        }
-        req.usuarioId = decoded.id;
-        req.rolId = decoded.id_rol;
-        next();
-    });
+    // Almacenar los datos decodificados del token en el objeto `req` para su uso posterior
+    req.usuarioId = decoded.userId; // Asumiendo que `userId` es lo que contiene el token
+    req.rolId = decoded.roleId; // Asumiendo que `roleId` es lo que contiene el token
+
+    next(); // Pasar al siguiente middleware o ruta
+  });
 };
 
-const verificarPermiso = (ruta) => {
-    return (req, res, next) => {
-        const permisosUsuario = permisos[req.rolId] || [];
-        if (permisosUsuario.includes(ruta)) {
-            next();
-        } else {
-            res.status(403).json({ mensaje: 'Acceso denegado' });
-        }
-    };
-};
-
-module.exports = { verificarToken, verificarPermiso };
+module.exports = { verificarToken };

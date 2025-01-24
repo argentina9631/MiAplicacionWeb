@@ -1,66 +1,57 @@
 // frontend/src/components/LoginForm.jsx
 import React, { useState } from 'react';
+import axios from 'axios';
 
-function LoginForm() {
+const LoginForm = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [errorMessage, setErrorMessage] = useState('');
+  const [error, setError] = useState('');
 
-  const handleLogin = async (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!process.env.REACT_APP_API_URL) {
-      console.error('Error: REACT_APP_API_URL no está definido en las variables de entorno.');
-      setErrorMessage('Error interno. Por favor, contacta al administrador.');
-      return;
-    }
-
     try {
-      const response = await fetch(`${process.env.REACT_APP_API_URL}/users/login`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password }),
+      const response = await axios.post('https://app-e1cc2c91-dfc6-49c5-8a1c-6a1907e248e3.cleverapps.io/api/users/login', {
+        email,
+        password
       });
-
-      const data = await response.json();
-
-      if (response.ok) {
-        localStorage.setItem('token', data.token);
-        window.location.href = '/dashboard'; // Redirige al dashboard
-      } else {
-        setErrorMessage(data.message || 'Credenciales inválidas.');
-      }
-    } catch (error) {
-      console.error('Error en la solicitud de login:', error.message);
-      setErrorMessage('Error al conectar con el servidor.');
+      console.log('Login exitoso', response.data);
+      // Aquí podrías almacenar el token y redirigir a otra página o hacer otra acción
+    } catch (err) {
+      console.error('Error en el login:', err);
+      setError('Credenciales inválidas');
     }
   };
 
   return (
-    <form onSubmit={handleLogin}>
-      <h2>Iniciar sesión</h2>
-      <div>
-        <label>Email</label>
-        <input
-          type="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-        />
-      </div>
-      <div>
-        <label>Contraseña</label>
-        <input
-          type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-        />
-      </div>
-      {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}
-      <button type="submit">Login</button>
-    </form>
+    <div>
+      <h2>Login</h2>
+      <form onSubmit={handleSubmit}>
+        <div>
+          <label>Email:</label>
+          <input
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+          />
+        </div>
+        <div>
+          <label>Password:</label>
+          <input
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+          />
+        </div>
+        {error && <p>{error}</p>}
+        <button type="submit">Login</button>
+      </form>
+    </div>
   );
-}
+};
 
 export default LoginForm;
+
+
