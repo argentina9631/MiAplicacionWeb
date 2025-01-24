@@ -1,8 +1,20 @@
 // frontend/src/App.js
 import React, { useEffect, useState } from 'react';
-import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
+import {
+  BrowserRouter as Router,
+  Route,
+  Routes,
+  Navigate,
+  unstable_HistoryRouter as HistoryRouter,
+  createBrowserHistory,
+} from 'react-router-dom';
 import LoginForm from './components/LoginForm';
 import Dashboard from './pages/Dashboard';
+
+const history = createBrowserHistory({
+  v7_startTransition: true,
+  v7_relativeSplatPath: true,
+});
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -28,7 +40,7 @@ function App() {
           setIsAuthenticated(false);
         }
       } catch (error) {
-        console.error("Error verifying token:", error);
+        console.error('Error verifying token:', error);
         setIsAuthenticated(false);
       }
     };
@@ -37,7 +49,7 @@ function App() {
   }, []);
 
   return (
-    <Router>
+    <HistoryRouter history={history}>
       <Routes>
         <Route
           path="/"
@@ -48,7 +60,7 @@ function App() {
           element={isAuthenticated ? <Dashboard /> : <Navigate to="/" replace />}
         />
       </Routes>
-    </Router>
+    </HistoryRouter>
   );
 }
 
