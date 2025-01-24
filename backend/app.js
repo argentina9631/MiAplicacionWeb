@@ -1,4 +1,3 @@
-//backend/app.js
 require('dotenv').config(); // Carga las variables de entorno desde el archivo .env
 
 const express = require('express');
@@ -9,9 +8,21 @@ const userRoutes = require('./routes/userRoutes'); // Asegúrate de que el archi
 const app = express();
 
 // Configuración de CORS
+const allowedOrigins = [
+  'https://miaplicacionweb.vercel.app',
+  'https://miaplicacionweb-git-master-enwebmiaplicacionwebs-projects.vercel.app',
+];
+
 const corsOptions = {
-  origin: process.env.CLIENT_URL || '*', // Usa la URL del cliente desde .env
-  credentials: true,
+  origin: (origin, callback) => {
+    // Permite solicitudes de orígenes permitidos o sin origen (por ejemplo, Postman)
+    if (allowedOrigins.includes(origin) || !origin) {
+      callback(null, true);
+    } else {
+      callback(new Error('No permitido por CORS'));
+    }
+  },
+  credentials: true, // Habilita el envío de cookies o tokens de autorización
 };
 
 app.use(cors(corsOptions));
