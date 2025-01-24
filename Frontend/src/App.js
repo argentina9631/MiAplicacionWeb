@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom'; // Usamos directamente BrowserRouter
+import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 import LoginForm from './components/LoginForm';
 import Dashboard from './pages/Dashboard';
 
@@ -36,7 +36,7 @@ function App() {
   }, []);
 
   return (
-    <Router> {/* Reemplazamos Router personalizado por BrowserRouter */}
+    <Router>
       <Routes>
         <Route
           path="/"
