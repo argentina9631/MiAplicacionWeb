@@ -1,11 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { Router, Route, Routes, Navigate } from 'react-router-dom'; // Nota: Usamos Router en lugar de HistoryRouter
-import { createBrowserHistory } from 'history'; // Importamos desde el paquete `history`
+import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom'; // Usamos directamente BrowserRouter
 import LoginForm from './components/LoginForm';
 import Dashboard from './pages/Dashboard';
-
-// Creamos el historial personalizado
-const history = createBrowserHistory();
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -40,7 +36,7 @@ function App() {
   }, []);
 
   return (
-    <Router history={history}>
+    <Router> {/* Reemplazamos Router personalizado por BrowserRouter */}
       <Routes>
         <Route
           path="/"
