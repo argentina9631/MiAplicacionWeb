@@ -1,4 +1,6 @@
+// backend/controllers/userController.js
 const crypto = require('crypto'); // Importa crypto para manejar SHA-256
+const jwt = require('jsonwebtoken'); // Importa jsonwebtoken para generar el JWT
 const pool = require('../config/db'); // Ajusta la ruta según tu estructura de carpetas
 
 const login = async (req, res) => {
@@ -45,7 +47,14 @@ const login = async (req, res) => {
 
     console.log("Login exitoso para el usuario:", user.nombre_persona);
 
-    // Responder con éxito y datos básicos del usuario
+    // Generar el JWT con la información del usuario
+    const token = jwt.sign(
+      { id: user.id_usuario, id_rol: user.id_rol }, // Datos a incluir en el payload
+      process.env.JWT_SECRET, // Usar el JWT_SECRET del archivo .env
+      { expiresIn: '1h' } // Expiración del token, 1 hora en este caso
+    );
+
+    // Responder con el JWT
     res.status(200).json({
       message: 'Login exitoso',
       user: {
@@ -54,6 +63,7 @@ const login = async (req, res) => {
         nombre_persona: user.nombre_persona,
         email: user.email,
       },
+      token, // Enviar el token generado
     });
 
   } catch (error) {
