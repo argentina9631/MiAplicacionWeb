@@ -1,27 +1,23 @@
 // backend/middleware/authMiddleware.js
 const jwt = require('jsonwebtoken');
+const SECRET_KEY = process.env.JWT_SECRET || 'clave-secreta';
 
-// Middleware para verificar el token
 const verificarToken = (req, res, next) => {
-  // Obtener el token del header Authorization
-  const token = req.headers.authorization && req.headers.authorization.split(' ')[1]; 
+    const token = req.headers.authorization?.split(' ')[1];
 
-  if (!token) {
-    return res.status(403).json({ mensaje: 'Token no proporcionado' });
-  }
-
-  // Verificar el token con la clave secreta desde las variables de entorno
-  jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
-    if (err) {
-      return res.status(401).json({ mensaje: 'Token inválido' });
+    if (!token) {
+        return res.status(401).json({ mensaje: 'Token no proporcionado' });
     }
 
-    // Almacenar los datos decodificados del token en el objeto `req` para su uso posterior
-    req.usuarioId = decoded.userId; // Asumiendo que `userId` es lo que contiene el token
-    req.rolId = decoded.roleId; // Asumiendo que `roleId` es lo que contiene el token
-
-    next(); // Pasar al siguiente middleware o ruta
-  });
+    try {
+        const decoded = jwt.verify(token, SECRET_KEY);
+        req.usuarioId = decoded.usuarioId;
+        req.rolId = decoded.rolId;
+        next();
+    } catch (error) {
+        return res.status(401).json({ mensaje: 'Token inválido' });
+    }
 };
 
 module.exports = { verificarToken };
+
