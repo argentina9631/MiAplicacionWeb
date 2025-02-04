@@ -1,3 +1,6 @@
+// backend/app.js
+require('dotenv').config(); // Carga las variables de entorno desde .env
+
 const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
@@ -11,8 +14,11 @@ app.use(bodyParser.json());  // Analizar cuerpos JSON
 // Usar las rutas de usuario
 app.use('/api/users', userRoutes);  // Configuración de la ruta de usuarios
 
-// Puerto de escucha
-const port = 3000;
-app.listen(port, () => {
-  console.log(`Servidor corriendo en el puerto ${port}`);
+// Definir el puerto desde el .env o usar 3000 por defecto
+const PORT = process.env.PORT || 3000;
+
+// Iniciar el servidor
+app.listen(PORT, () => {
+  console.log(`🚀 Servidor corriendo en el puerto ${PORT}`);
 });
+

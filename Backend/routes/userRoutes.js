@@ -1,11 +1,11 @@
-const express = require('express');
+// backend/routes/userRoutes.js
+const express = require("express");
 const router = express.Router();
-const userController = require('../controllers/userController');
+const userController = require("../controllers/userController");
 
-console.log(userController);  // Agrega esta línea para ver el objeto
+console.log("userController cargado:", userController); // Agregado para depuración
 
 // Ruta para login
-router.post('/login', userController.login);
+router.post("/login", userController.login);
 
-// Exportar las rutas
 module.exports = router;
