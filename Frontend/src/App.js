@@ -1,4 +1,4 @@
-// La ruta de este archivo es frontend/src/App.js
+//La ruta de este archivo es frontend/src/App.js
 import React from "react";
 import LoginForm from "./components/LoginForm";
 
