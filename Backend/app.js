@@ -1,4 +1,4 @@
-// backend/app.js
+// La ruta de este archivo es backend/app.js
 require('dotenv').config(); // Carga las variables de entorno desde .env
 
 const express = require('express');
