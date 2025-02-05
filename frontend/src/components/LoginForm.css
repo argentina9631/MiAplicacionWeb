@@ -15,10 +15,10 @@ body {
   position: relative;
 }
 
-/* 📌 Contenedor del login */
+/* 📌 Contenedor del login (movido a la izquierda) */
 .login-container {
   width: 100%;
-  max-width: 450px; /* Ajustado para una mejor visualización en PC */
+  max-width: 450px;
   padding: 50px;
   background-color: rgba(255, 255, 255, 0.85);
   border-radius: 10px;
@@ -27,6 +27,8 @@ body {
   flex-direction: column;
   align-items: center;
   text-align: center;
+  position: relative;
+  left: -30px; /* 🔹 Mueve el login hacia la izquierda */
 }
 
 /* 📌 Título */
@@ -55,7 +57,7 @@ body {
 /* 📌 Inputs ajustados */
 .login-container input {
   width: 100%;
-  max-width: 380px; /* Limita el ancho en pantallas grandes */
+  max-width: 380px;
   padding: 16px;
   border: 1px solid #ccc;
   border-radius: 6px;
@@ -66,7 +68,7 @@ body {
 /* 📌 Botón "Login" ajustado */
 .login-container button {
   width: 100%;
-  max-width: 380px; /* Evita que se desborde en móviles */
+  max-width: 380px;
   padding: 16px;
   background-color: #007bff;
   color: white;
@@ -82,7 +84,7 @@ body {
   background-color: #0056b3;
 }
 
-/* 📌 Footer centrado y más abajo */
+/* 📌 Footer centrado */
 footer {
   position: absolute;
   bottom: 15px;
@@ -102,6 +104,7 @@ footer {
   .login-container {
     max-width: 90%;
     padding: 30px;
+    left: 0; /* 🔹 En celulares, no se mueve a la izquierda */
   }
 
   .login-container h2 {

@@ -58,7 +58,7 @@ const LoginForm = () => {
       </div>
 
       <footer>
-        Creado por Yo
+        Creado por Pablo Rivero
       </footer>
     </>
   );
