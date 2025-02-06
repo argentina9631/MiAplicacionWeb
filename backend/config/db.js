@@ -1,4 +1,5 @@
 const mysql = require('mysql2');
+
 // Configuración de la conexión
 const connection  = mysql.createConnection({
   host: 'localhost',
@@ -9,6 +10,7 @@ const connection  = mysql.createConnection({
   connectionLimit: 10,
   queueLimit: 0
 });
+
 // Verificar que la conexión se haya realizado correctamente
 connection.connect((err) => {
   if (err) {
@@ -17,4 +19,5 @@ connection.connect((err) => {
   }
   console.log("Conectado a la base de datos con el ID " + connection.threadId);
 });
+
 module.exports = connection;
