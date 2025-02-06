@@ -1,12 +1,11 @@
 // backend/controllers/userController.js
-const db = require("../config/db");
 const jwt = require("jsonwebtoken");
-const User = require("../models/User");
 const bcrypt = require("bcryptjs");
+const User = require("../models/User");
 
 const loginUser = async (req, res) => {
   try {
-    console.log("🔹 Request body:", req.body); // Debug
+    console.log("🔹 Request body:", req.body);
     const { email, password } = req.body;
 
     if (!email || !password) {
@@ -31,7 +30,7 @@ const loginUser = async (req, res) => {
       { expiresIn: "1h" }
     );
 
-    console.log("✅ Login exitoso para:", user.email); // Debug
+    console.log("✅ Login exitoso para:", user.email);
     res.status(200).json({ message: "Login exitoso", token, user });
   } catch (error) {
     console.error("❌ Error en el login:", error);
@@ -39,4 +38,4 @@ const loginUser = async (req, res) => {
   }
 };
 
-module.exports = { loginUser }; // Exporta correctamente
+module.exports = { loginUser };
