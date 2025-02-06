@@ -1,4 +1,4 @@
-// backend/config/db.js
+// la ruta es backend/config/db.js
 const mysql = require('mysql2');
 
 // Configuración de la conexión con promesas
