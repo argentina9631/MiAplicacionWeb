@@ -1,5 +1,4 @@
 // backend/models/User.js
-
 const db = require("../config/db");
 const bcrypt = require("bcryptjs");
 
@@ -9,7 +8,7 @@ class User {
       console.log("🔎 Buscando usuario con email:", email); // Depuración
 
       // Ejecutar la consulta
-      const result = await db.execute(
+      const [rows] = await db.execute(
         `SELECT u.id_usuario, u.nombre_usuario, u.contrasena_hash, 
                 p.id_persona, p.nombre_persona, p.email 
          FROM Usuarios u 
@@ -18,20 +17,17 @@ class User {
         [email]
       );
 
-      console.log("🟢 Resultado crudo de la consulta:", result); // Ver qué devuelve realmente
+      console.log("🟢 Filas obtenidas:", rows); // Ver qué devuelve realmente
 
-      // Verificar si result es un arreglo y tiene elementos
-      if (!result || !Array.isArray(result[0]) || result[0].length === 0) {
-        throw new Error("La consulta no devolvió datos válidos.");
+      if (!rows || rows.length === 0) {
+        console.warn("⚠️ No se encontró el usuario con email:", email);
+        return null;
       }
 
-      const rows = result[0]; // Extraer las filas del primer elemento del arreglo
-      console.log("📌 Filas obtenidas:", rows);
-
-      return rows.length > 0 ? rows[0] : null;
+      return rows[0]; // Retornar el primer usuario encontrado
     } catch (error) {
       console.error("❌ Error en findByEmail:", error);
-      throw error;
+      throw new Error("Error al buscar el usuario por email");
     }
   }
 }

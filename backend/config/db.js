@@ -1,7 +1,7 @@
 // backend/config/db.js
 const mysql = require('mysql2');
 
-// Configuración de la conexión
+// Configuración de la conexión con promesas
 const connection = mysql.createPool({
   host: process.env.DB_HOST || 'localhost',
   user: process.env.DB_USER || 'root',
@@ -12,13 +12,15 @@ const connection = mysql.createPool({
   queueLimit: 0
 });
 
+// Verificar la conexión
 connection.getConnection((err, conn) => {
   if (err) {
-    console.error("Error de conexión a la base de datos:", err.message);
+    console.error("❌ Error de conexión a la base de datos:", err.message);
   } else {
-    console.log("Conectado a la base de datos");
+    console.log("✅ Conectado a la base de datos");
     conn.release();
   }
 });
 
-module.exports = connection;
+// Exportar con soporte de promesas
+module.exports = connection.promise();
