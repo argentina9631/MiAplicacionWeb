@@ -1,26 +1,21 @@
 // backend/config/db.js
-const mysql = require('mysql2');
+const mysql = require('mysql2/promise');
 
-// Configuración de la conexión con promesas
-const connection = mysql.createPool({
-  host: process.env.DB_HOST || 'localhost',
-  user: process.env.DB_USER || 'root',
-  password: process.env.DB_PASSWORD || '9631argentina',
-  database: process.env.DB_NAME || 'db_miaplicacionweb',
-  waitForConnections: true,
-  connectionLimit: 10,
-  queueLimit: 0
+const db = mysql.createPool({
+    host: process.env.MYSQL_ADDON_HOST || 'localhost',
+    user: process.env.MYSQL_ADDON_USER || 'root',
+    password: process.env.MYSQL_ADDON_PASSWORD || '',
+    database: process.env.MYSQL_ADDON_DB || 'mi_base_datos',
+    port: process.env.MYSQL_ADDON_PORT || 3306,
+    waitForConnections: true,
+    connectionLimit: 10,
+    queueLimit: 0,
+    connectTimeout: 10000,
+    acquireTimeout: 10000
 });
 
-// Verificar la conexión
-connection.getConnection((err, conn) => {
-  if (err) {
-    console.error("❌ Error de conexión a la base de datos:", err.message);
-  } else {
-    console.log("✅ Conectado a la base de datos");
-    conn.release();
-  }
-});
+db.getConnection()
+    .then(() => console.log('✅ Conectado a la base de datos'))
+    .catch(err => console.error('❌ Error de conexión a la base de datos:', err.message));
 
-// Exportar con soporte de promesas
-module.exports = connection.promise();
+module.exports = db;
