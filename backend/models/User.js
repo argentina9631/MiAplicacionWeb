@@ -1,44 +1,38 @@
-const db = require('../config/db');
-const bcrypt = require('bcryptjs');
+// backend/models/User.js
+
+const db = require("../config/db");
+const bcrypt = require("bcryptjs");
 
 class User {
-  // Buscar usuario por correo electrónico
   static async findByEmail(email) {
-    // Realiza un JOIN entre Usuarios y Personas para obtener los detalles completos del usuario
-    const [rows] = await db.execute(
-      'SELECT u.id_usuario, u.nombre_usuario, u.contrasena_hash, p.id_persona, p.nombre_persona, p.email ' +
-      'FROM Usuarios u ' +
-      'JOIN Personas p ON u.id_persona = p.id_persona ' +
-      'WHERE p.email = ?',
-      [email]
-    );
+    try {
+      console.log("🔎 Buscando usuario con email:", email); // Depuración
 
-    // Si no se encuentra el usuario, retorna null
-    if (rows.length === 0) {
-      return null;
+      // Ejecutar la consulta
+      const result = await db.execute(
+        `SELECT u.id_usuario, u.nombre_usuario, u.contrasena_hash, 
+                p.id_persona, p.nombre_persona, p.email 
+         FROM Usuarios u 
+         INNER JOIN Personas p ON u.id_persona = p.id_persona 
+         WHERE p.email = ?`,
+        [email]
+      );
+
+      console.log("🟢 Resultado crudo de la consulta:", result); // Ver qué devuelve realmente
+
+      // Verificar si result es un arreglo y tiene elementos
+      if (!result || !Array.isArray(result[0]) || result[0].length === 0) {
+        throw new Error("La consulta no devolvió datos válidos.");
+      }
+
+      const rows = result[0]; // Extraer las filas del primer elemento del arreglo
+      console.log("📌 Filas obtenidas:", rows);
+
+      return rows.length > 0 ? rows[0] : null;
+    } catch (error) {
+      console.error("❌ Error en findByEmail:", error);
+      throw error;
     }
-
-    return rows[0]; // Retorna el primer usuario encontrado
-  }
-
-  // Crear un nuevo usuario
-  static async create(user) {
-    // Hashear la contraseña con bcrypt
-    const hashedPassword = await bcrypt.hash(user.password, 10);
-
-    // Insertar el usuario en la tabla Usuarios
-    const [result] = await db.execute(
-      'INSERT INTO Usuarios (nombre_usuario, contrasena_hash, id_persona) VALUES (?, ?, ?)',
-      [user.username, hashedPassword, user.id_persona]
-    );
-
-    return result.insertId; // Retorna el ID del usuario insertado
-  }
-
-  // Verificar la contraseña
-  static async verifyPassword(storedHash, password) {
-    // Comparar la contraseña ingresada con la contraseña hasheada almacenada
-    return await bcrypt.compare(password, storedHash);
   }
 }
 

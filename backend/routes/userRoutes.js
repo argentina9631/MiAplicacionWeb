@@ -1,11 +1,14 @@
 // backend/routes/userRoutes.js
 const express = require("express");
 const router = express.Router();
-const userController = require("../controllers/userController");
+const { loginUser } = require("../controllers/userController"); // Importación correcta
 
-console.log("userController cargado:", userController); // Agregado para depuración
+console.log("✅ Rutas de usuarios cargadas");
 
-// Ruta para login
-router.post("/login", userController.login);
+// Ruta para iniciar sesión
+router.post("/login", (req, res) => {
+  console.log("➡️ POST /api/users/login recibido"); // Debug
+  loginUser(req, res);
+});
 
 module.exports = router;

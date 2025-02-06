@@ -3,7 +3,8 @@ import React, { useState } from "react";
 import axios from "axios";
 import "./LoginForm.css";
 
-const apiUrl = process.env.REACT_APP_API_URL || "http://localhost:3001";
+const apiUrl = process.env.REACT_APP_API_URL || "http://localhost:8080"; // Agregado fallback para evitar undefined
+console.log("API URL cargada:", apiUrl);  // Log de depuración
 
 const LoginForm = () => {
   const [email, setEmail] = useState("");
@@ -14,8 +15,11 @@ const LoginForm = () => {
     e.preventDefault();
     setError(null);
 
+    const loginUrl = `${apiUrl}/api/users/login`;
+    console.log("Enviando solicitud a:", loginUrl);  // Log de depuración
+
     try {
-      const response = await axios.post(`${apiUrl}/api/users/login`, { email, password });
+      const response = await axios.post(loginUrl, { email, password });
       console.log("Token recibido:", response.data.token);
       alert("Inicio de sesión exitoso");
     } catch (error) {

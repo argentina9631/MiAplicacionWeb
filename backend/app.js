@@ -1,24 +1,41 @@
-//La ruta de este archivo es backend/app.js
-require('dotenv').config(); // Carga las variables de entorno desde .env
+// backend/app.js
+require("dotenv").config();
 
-const express = require('express');
-const cors = require('cors');
-const bodyParser = require('body-parser');
-const userRoutes = require('./routes/userRoutes');  // Asegúrate de que la ruta sea correcta
+const express = require("express");
+const cors = require("cors");
+const bodyParser = require("body-parser");
+const userRoutes = require("./routes/userRoutes"); // Asegúrate de que este archivo exista
 
 const app = express();
 
-app.use(cors());  // Permitir solicitudes desde otros orígenes
-app.use(bodyParser.json());  // Analizar cuerpos JSON
+app.use(cors());
+app.use(bodyParser.json());
 
-// Usar las rutas de usuario
-app.use('/api/users', userRoutes);  // Configuración de la ruta de usuarios
+// Agregar log para verificar que la aplicación está iniciando correctamente
+console.log("🚀 Servidor iniciando...");
 
-// Definir el puerto desde el .env o usar 3000 por defecto
-const PORT = process.env.PORT || 3000;
-
-// Iniciar el servidor
-app.listen(PORT, () => {
-  console.log(`🚀 Servidor corriendo en el puerto ${PORT}`);
+// Middleware para loguear cada solicitud (depuración)
+app.use((req, res, next) => {
+  console.log(`➡️ ${req.method} ${req.url}`);
+  next();
 });
 
+// Usar las rutas de usuario
+app.use("/api/users", userRoutes);
+
+// Ruta de prueba para verificar que el backend está corriendo
+app.get("/", (req, res) => {
+  res.send("✅ Servidor en funcionamiento");
+});
+
+// Manejo de rutas no encontradas
+app.use((req, res, next) => {
+  res.status(404).json({ error: "Ruta no encontrada" });
+});
+
+// Definir el puerto desde el .env o usar 8080 por defecto
+const PORT = process.env.PORT || 8080;
+
+app.listen(PORT, () => {
+  console.log(`✅ Servidor corriendo en http://localhost:${PORT}`);
+});
