@@ -1,6 +1,6 @@
 // frontend/src/components/LoginForm.jsx
 import React, { useState } from "react";
-import { api } from "../api";
+import api from '../api'; // Importación correcta
 import "./LoginForm.css";
 
 const LoginForm = () => {
