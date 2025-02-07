@@ -1,15 +1,11 @@
 {
-    "name": "mi-aplicacion-web",
+    "name": "miaplicacionweb",
     "version": "1.0.0",
     "private": true,
     "scripts": {
-        "start": "concurrently \"npm run start-backend\" \"npm run start-frontend\"",
-        "start-backend": "cd backend && npm install && npm start",
-        "start-frontend": "cd frontend && npm install && npm start",
-        "build": "cd frontend && npm run build",
-        "deploy": "echo 'Deploying the app...'"
-    },
-    "devDependencies": {
-        "concurrently": "^9.1.2"
+      "start": "cd backend && npm start",
+      "build": "cd frontend && npm run build",
+      "deploy": "echo 'Deploying the app...'"
     }
-}
+  }
+  
