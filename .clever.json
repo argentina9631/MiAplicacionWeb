@@ -1,0 +1,12 @@
+{
+  "apps": [
+    {
+      "app_id": "app_e1cc2c91-dfc6-49c5-8a1c-6a1907e248e3",
+      "org_id": "user_2574e117-666d-474b-9175-a48765d18058",
+      "deploy_url": "https://github.com/argentina9631/MiAplicacionWeb.git",
+      "git_ssh_url": "https://github.com/argentina9631/MiAplicacionWeb.git",
+      "name": "MiAplicacionWeb",
+      "alias": "MiAplicacionWeb"
+    }
+  ]
+}
