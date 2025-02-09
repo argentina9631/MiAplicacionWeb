@@ -23,19 +23,23 @@ const loginUser = async (req, res) => {
 
         console.log('🟢 Usuario encontrado:', user.nombre_persona);
 
-        const passwordMatch = bcrypt.compareSync(password, user.contrasena_hash);
+        const passwordMatch = await bcrypt.compare(password, user.contrasena_hash);
         if (!passwordMatch) {
             console.log('❌ Contraseña incorrecta');
             return res.status(400).json({ error: 'Email o contraseña incorrectos' });
         }
 
-        const token = jwt.sign({ id: user.id_usuario, email: user.email }, process.env.JWT_SECRET, { expiresIn: '1h' });
+        const token = jwt.sign(
+            { id: user.id_usuario, email: user.email },
+            process.env.JWT_SECRET,
+            { expiresIn: '1h' }
+        );
 
         console.log('✅ Login exitoso');
         res.json({ token, user: { id: user.id_usuario, email: user.email, nombre: user.nombre_persona } });
 
     } catch (error) {
-        console.error('❌ Error en el login:', error.message);
+        console.error('❌ Error en el login:', error);
         res.status(500).json({ error: 'Error interno del servidor' });
     }
 };
