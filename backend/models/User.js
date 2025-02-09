@@ -5,7 +5,7 @@ class User {
     static async findByEmail(email) {
         try {
             const [rows] = await db.execute(
-                'SELECT id_usuario, nombre_usuario, contrasena_hash, id_persona, nombre_persona, email FROM Usuarios WHERE email = ?',
+                'SELECT id_usuario, nombre_usuario, contrasena_hash, email FROM Usuarios WHERE email = ?',
                 [email]
             );
 

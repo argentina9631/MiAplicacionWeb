@@ -21,7 +21,7 @@ const loginUser = async (req, res) => {
             return res.status(400).json({ error: 'Email o contraseña incorrectos' });
         }
 
-        console.log('🟢 Usuario encontrado:', user.nombre_persona);
+        console.log('🟢 Usuario encontrado:', user.nombre_usuario);
 
         const passwordMatch = await bcrypt.compare(password, user.contrasena_hash);
         if (!passwordMatch) {
@@ -36,7 +36,7 @@ const loginUser = async (req, res) => {
         );
 
         console.log('✅ Login exitoso');
-        res.json({ token, user: { id: user.id_usuario, email: user.email, nombre: user.nombre_persona } });
+        res.json({ token, user: { id: user.id_usuario, email: user.email, nombre: user.nombre_usuario } });
 
     } catch (error) {
         console.error('❌ Error en el login:', error);
