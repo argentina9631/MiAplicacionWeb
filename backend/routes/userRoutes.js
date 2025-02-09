@@ -1,4 +1,4 @@
-// backend/routes/userRoutes.js
+//ruta: backend/routes/userRoutes.js
 const express = require("express");
 const router = express.Router();
 const { loginUser } = require("../controllers/userController");
