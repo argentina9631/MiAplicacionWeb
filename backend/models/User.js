@@ -1,21 +1,21 @@
 // backend/models/User.js
-const db = require("../config/db");
+const db = require('../config/db'); // Asegúrate de importar tu conexión MySQL
 
-class User {
-    static async findByEmail(email) {
-        try {
-            const [rows] = await db.execute(
-                `SELECT P.id_persona, U.nombre_usuario, U.contrasena_hash, P.email
-                 FROM Personas P
-                 LEFT JOIN Usuarios U ON U.id_persona = P.id_persona
-                 WHERE P.email = ?`,
-                [email]
-            );
-            return rows.length > 0 ? rows[0] : null;
-        } catch (error) {
-            console.error("Error en findByEmail:", error);
-            throw error;
-        }
+async function findByEmail(email) {
+    try {
+        const [rows] = await db.execute(
+            `SELECT Usuarios.id_usuario, Usuarios.nombre_usuario, Usuarios.contrasena_hash, 
+                    Personas.email 
+             FROM Usuarios
+             JOIN Personas ON Usuarios.id_persona = Personas.id_persona
+             WHERE Personas.email = ?`,
+            [email]
+        );
+
+        return rows.length ? rows[0] : null;
+    } catch (error) {
+        console.error('Error en findByEmail:', error);
+        throw error;
     }
 }
 
