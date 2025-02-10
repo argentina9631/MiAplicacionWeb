@@ -4,20 +4,22 @@ const db = require('../config/db');
 const User = {
     async findByEmail(email) {
         try {
-            const [rows] = await db.execute(
-                `SELECT Usuarios.id_usuario, Usuarios.nombre_usuario, Usuarios.contrasena_hash, 
-                        Personas.email 
-                 FROM Usuarios
-                 JOIN Personas ON Usuarios.id_persona = Personas.id_persona
-                 WHERE Personas.email = ?`,
-                [email]
-            );
+            const query = `
+                SELECT U.id_usuario, U.nombre_usuario, U.contrasena_hash, P.email
+                FROM b8biz3pozkccjo4cgtlo.Usuarios U
+                JOIN b8biz3pozkccjo4cgtlo.Personas P ON U.id_persona = P.id_persona
+                WHERE P.email = ?`;
+
+            console.log('🔍 Ejecutando consulta:', query, 'con email:', email);
+            const [rows] = await db.execute(query, [email]);
+
+            console.log('📌 Resultado de la consulta:', rows);
             return rows.length ? rows[0] : null;
         } catch (error) {
-            console.error('Error en findByEmail:', error);
+            console.error('❌ Error en findByEmail:', error);
             throw error;
         }
     }
 };
 
-module.exports = User; // Ahora `User` está definido antes de exportarlo
+module.exports = User;

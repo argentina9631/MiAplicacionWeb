@@ -1,5 +1,6 @@
 // backend/config/db.js
 const mysql = require('mysql2/promise');
+require('dotenv').config();
 
 const {
     MYSQL_ADDON_HOST,
@@ -9,7 +10,6 @@ const {
     MYSQL_ADDON_PORT
 } = process.env;
 
-// Configuración de la base de datos con valores por defecto seguros
 const db = mysql.createPool({
     host: MYSQL_ADDON_HOST || '127.0.0.1',
     user: MYSQL_ADDON_USER || 'root',
@@ -23,15 +23,14 @@ const db = mysql.createPool({
     acquireTimeout: 10000
 });
 
-// Verificación de conexión
 db.getConnection()
     .then(connection => {
-        console.log('✅ Conectado a la base de datos:', MYSQL_ADDON_DB || 'mi_base_datos');
+        console.log(`✅ Conectado a la base de datos: ${MYSQL_ADDON_DB || 'mi_base_datos'}`);
         connection.release();
     })
     .catch(err => {
         console.error('❌ Error de conexión a la base de datos:', err.message);
-        process.exit(1); // Salir del proceso si no se puede conectar
+        process.exit(1);
     });
 
 module.exports = db;
