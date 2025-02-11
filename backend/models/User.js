@@ -1,25 +1,22 @@
 // backend/models/User.js
 const db = require('../config/db');
 
-const User = {
-    async findByEmail(email) {
+class User {
+    static async findByEmail(email) {
         try {
-            const query = `
-                SELECT U.id_usuario, U.nombre_usuario, U.contrasena_hash, P.email
-                FROM b8biz3pozkccjo4cgtlo.Usuarios U
-                JOIN b8biz3pozkccjo4cgtlo.Personas P ON U.id_persona = P.id_persona
-                WHERE P.email = ?`;
+            const [rows] = await db.execute(`
+                SELECT u.id_usuario, u.nombre_usuario, u.contrasena_hash, p.email
+                FROM Usuarios u
+                JOIN Personas p ON u.id_persona = p.id_persona
+                WHERE p.email = ?
+            `, [email]);
 
-            console.log('🔍 Ejecutando consulta:', query, 'con email:', email);
-            const [rows] = await db.execute(query, [email]);
-
-            console.log('📌 Resultado de la consulta:', rows);
-            return rows.length ? rows[0] : null;
+            return rows.length > 0 ? rows[0] : null;
         } catch (error) {
-            console.error('❌ Error en findByEmail:', error);
+            console.error("❌ Error en findByEmail:", error);
             throw error;
         }
     }
-};
+}
 
 module.exports = User;

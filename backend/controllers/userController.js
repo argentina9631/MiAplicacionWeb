@@ -23,6 +23,11 @@ const loginUser = async (req, res) => {
 
         console.log('🟢 Usuario encontrado:', user.nombre_usuario);
 
+        if (!user.contrasena_hash || user.contrasena_hash.length < 50) {
+            console.error('❌ La contraseña en la base de datos no está encriptada correctamente.');
+            return res.status(500).json({ error: "Error interno: Contraseña no segura" });
+        }
+
         const passwordMatch = await bcrypt.compare(password, user.contrasena_hash);
         if (!passwordMatch) {
             console.log('❌ Contraseña incorrecta');

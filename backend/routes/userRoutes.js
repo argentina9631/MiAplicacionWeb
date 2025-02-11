@@ -23,6 +23,12 @@ router.post("/login", async (req, res) => {
 
         console.log('✅ Usuario encontrado:', user);
 
+        // ⚠️ Verificar si la contraseña en la base de datos es realmente un hash
+        if (!user.contrasena_hash || user.contrasena_hash.length < 50) {
+            console.error('❌ Error: La contraseña en la base de datos no parece estar encriptada.');
+            return res.status(500).json({ message: "Error interno: Contraseña no segura" });
+        }
+
         const isPasswordValid = await bcrypt.compare(password, user.contrasena_hash);
         if (!isPasswordValid) {
             console.warn('⚠️ Contraseña incorrecta para usuario:', user.nombre_usuario);
