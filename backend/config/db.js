@@ -1,36 +1,25 @@
 // backend/config/db.js
+
 const mysql = require('mysql2/promise');
 require('dotenv').config();
 
-const {
-    MYSQL_ADDON_HOST,
-    MYSQL_ADDON_USER,
-    MYSQL_ADDON_PASSWORD,
-    MYSQL_ADDON_DB,
-    MYSQL_ADDON_PORT
-} = process.env;
-
-const db = mysql.createPool({
-    host: MYSQL_ADDON_HOST || '127.0.0.1',
-    user: MYSQL_ADDON_USER || 'root',
-    password: MYSQL_ADDON_PASSWORD || '',
-    database: MYSQL_ADDON_DB || 'mi_base_datos',
-    port: MYSQL_ADDON_PORT ? parseInt(MYSQL_ADDON_PORT, 10) : 3306,
+const pool = mysql.createPool({
+    host: process.env.DB_HOST,
+    user: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_NAME,
     waitForConnections: true,
-    connectionLimit: 10,
-    queueLimit: 0,
-    connectTimeout: 10000,
-    acquireTimeout: 10000
+    connectionLimit: 5, // Reducido para evitar ECONNRESET
+    queueLimit: 0
 });
 
-db.getConnection()
-    .then(connection => {
-        console.log(`✅ Conectado a la base de datos: ${MYSQL_ADDON_DB || 'mi_base_datos'}`);
-        connection.release();
+pool.getConnection()
+    .then(conn => {
+        console.log(`✅ Conectado a la base de datos: ${process.env.DB_NAME}`);
+        conn.release();
     })
     .catch(err => {
-        console.error('❌ Error de conexión a la base de datos:', err.message);
-        process.exit(1);
+        console.error(`❌ Error al conectar a la base de datos: ${err.message}`);
     });
 
-module.exports = db;
+module.exports = pool;

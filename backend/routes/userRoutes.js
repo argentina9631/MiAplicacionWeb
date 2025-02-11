@@ -1,48 +1,36 @@
 // backend/routes/userRoutes.js
-const express = require("express");
+
+const express = require('express');
+const crypto = require('crypto'); // Usado en lugar de bcrypt si el hash es SHA-256
+const jwt = require('jsonwebtoken');
+const User = require('../models/User');
+
 const router = express.Router();
-const User = require("../models/User");
-const bcrypt = require("bcryptjs");
-const jwt = require("jsonwebtoken");
 
-router.post("/login", async (req, res) => {
+router.post('/login', async (req, res) => {
+    const { email, password } = req.body;
+
     try {
-        console.log('📩 Solicitud de login recibida:', req.body);
-        const { email, password } = req.body;
-
-        if (!email || !password) {
-            console.warn('⚠️ Email o contraseña faltante');
-            return res.status(400).json({ message: "Email y contraseña son requeridos" });
-        }
-
         const user = await User.findByEmail(email);
         if (!user) {
-            console.warn('⚠️ Usuario no encontrado con email:', email);
-            return res.status(400).json({ message: "Email o contraseña incorrectos" });
+            return res.status(400).json({ message: 'Email o contraseña incorrectos' });
         }
 
-        console.log('✅ Usuario encontrado:', user);
-
-        // ⚠️ Verificar si la contraseña en la base de datos es realmente un hash
-        if (!user.contrasena_hash || user.contrasena_hash.length < 50) {
-            console.error('❌ Error: La contraseña en la base de datos no parece estar encriptada.');
-            return res.status(500).json({ message: "Error interno: Contraseña no segura" });
+        // Si la base de datos usa SHA-256 en lugar de bcrypt
+        const passwordHash = crypto.createHash('sha256').update(password).digest('hex');
+        if (passwordHash !== user.password) {
+            console.warn(`⚠️ Contraseña incorrecta para usuario: ${user.email}`);
+            return res.status(400).json({ message: 'Email o contraseña incorrectos' });
         }
 
-        const isPasswordValid = await bcrypt.compare(password, user.contrasena_hash);
-        if (!isPasswordValid) {
-            console.warn('⚠️ Contraseña incorrecta para usuario:', user.nombre_usuario);
-            return res.status(400).json({ message: "Email o contraseña incorrectos" });
-        }
+        const token = jwt.sign({ id: user.idUsuario }, process.env.JWT_SECRET, {
+            expiresIn: '1h'
+        });
 
-        const token = jwt.sign({ id: user.id_usuario, email: user.email }, process.env.JWT_SECRET, { expiresIn: "1h" });
-
-        console.log('🔐 Token generado para usuario:', user.nombre_usuario);
-        res.json({ token, user: { id: user.id_usuario, nombre: user.nombre_usuario, email: user.email } });
-
+        res.json({ token, idUsuario: user.idUsuario });
     } catch (error) {
-        console.error("❌ Error en /login:", error);
-        res.status(500).json({ message: "Error interno del servidor" });
+        console.error(`❌ Error en /login: ${error.message}`);
+        res.status(500).json({ message: 'Error interno del servidor' });
     }
 });
 
