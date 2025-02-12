@@ -2,14 +2,14 @@
 const express = require('express');
 const morgan = require('morgan');
 const userRoutes = require('./routes/userRoutes');
-const connectDB = require('./config/db');
+const connectDB = require('./config/db'); // Importar la función correctamente
 require('dotenv').config();
 
 const app = express();
 const PORT = process.env.PORT || 5000;
 
 // Conectar a la base de datos
-connectDB();
+connectDB(); // Llamar a la función para establecer la conexión
 
 // Middleware
 app.use(express.json());
