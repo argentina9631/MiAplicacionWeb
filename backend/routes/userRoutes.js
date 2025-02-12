@@ -1,12 +1,10 @@
-// backend/routes/userRoutes.js
+// Nombre del archivo original: userRoutes.js
 const express = require('express');
+const { loginUser } = require('../controllers/userController');
+
 const router = express.Router();
-const { loginUser, verifyToken } = require('../controllers/userController');
 
-// Ruta para login
+// Ruta de inicio de sesión
 router.post('/login', loginUser);
-
-// Ruta de verificación de token
-router.get('/verify', verifyToken);
 
 module.exports = router;

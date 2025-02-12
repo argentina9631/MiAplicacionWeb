@@ -1,30 +1,21 @@
-// backend/config/db.js
-const mysql = require('mysql2/promise');
-const dotenv = require('dotenv');
+// Nombre del archivo original: db.js
+const mysql = require('mysql2');
 
-dotenv.config();
+const connection = mysql.createConnection({
+  host: process.env.DB_HOST,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB_NAME,
+  port: process.env.DB_PORT || 3306,
+});
 
-const connectDB = async () => {
-  try {
-    const connection = await mysql.createConnection({
-      host: process.env.MYSQL_ADDON_HOST,
-      user: process.env.MYSQL_ADDON_USER,
-      password: process.env.MYSQL_ADDON_PASSWORD,
-      database: process.env.MYSQL_ADDON_DB,
-      port: process.env.MYSQL_ADDON_PORT || 3306,
-    });
-    console.log(`✅ Conectado a la base de datos: ${process.env.MYSQL_ADDON_DB}`);
-    global.dbConnection = connection;
-
-    // Manejo de errores de conexión
-    connection.on('error', (err) => {
-      console.error('❌ Error en la conexión a la base de datos:', err.message);
-      process.exit(1);
-    });
-  } catch (error) {
-    console.error('❌ Error al conectar a la base de datos:', error.message);
+connection.connect((err) => {
+  if (err) {
+    console.error('Error al conectar con la base de datos:', err);
     process.exit(1);
+  } else {
+    console.log('Conectado a la base de datos MySQL');
   }
-};
+});
 
-module.exports = { connectDB };
+module.exports = connection;

@@ -1,39 +1,29 @@
-// backend/app.js
+// Nombre del archivo original: app.js
 const express = require('express');
-const dotenv = require('dotenv');
 const cors = require('cors');
-const userRoutes = require('./routes/userRoutes');
-const { connectDB } = require('./config/db');
+const dotenv = require('dotenv');
+const db = require('./config/db'); // Asegurando la conexión de la base de datos
 
 dotenv.config();
 
 const app = express();
-const PORT = process.env.PORT || 8080;
 
-// Configurar CORS usando variable de entorno para mayor flexibilidad
-const allowedOrigins = [process.env.CLIENT_URL, 'http://localhost:3000'];
-app.use(
-  cors({
-    origin: function (origin, callback) {
-      if (allowedOrigins.includes(origin) || !origin) {
-        callback(null, true);
-      } else {
-        callback(new Error('Not allowed by CORS'));
-      }
-    },
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-    credentials: true,
-  })
-);
-
+// Middleware para analizar JSON
 app.use(express.json());
 
-// Conectar a la base de datos
-connectDB();
+// Configuración CORS
+const allowedOrigins = process.env.CLIENT_URL || 'http://localhost:3000';
+app.use(cors({ origin: allowedOrigins, credentials: true }));
 
 // Rutas
+const userRoutes = require('./routes/userRoutes');
 app.use('/api/users', userRoutes);
+
+// Puerto del servidor
+const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () => {
   console.log(`Servidor corriendo en el puerto ${PORT}`);
 });
+
+module.exports = app;
