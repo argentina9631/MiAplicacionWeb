@@ -11,16 +11,26 @@ const app = express();
 // Middleware para analizar JSON
 app.use(express.json());
 
-// Configuración CORS
-const allowedOrigins = process.env.CLIENT_URL || 'http://localhost:3000';
-app.use(cors({ origin: allowedOrigins, credentials: true }));
+// Configuración de CORS
+const allowedOrigins = [process.env.CLIENT_URL || 'http://localhost:3000'];
+app.use(
+  cors({
+    origin: allowedOrigins,
+    credentials: true,
+  })
+);
 
 // Rutas
 const userRoutes = require('./routes/userRoutes');
 app.use('/api/users', userRoutes);
 
+// Ruta raíz para evitar errores 404 en producción
+app.get('/', (req, res) => {
+  res.send('API en funcionamiento');
+});
+
 // Puerto del servidor
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 8080;
 
 app.listen(PORT, () => {
   console.log(`Servidor corriendo en el puerto ${PORT}`);

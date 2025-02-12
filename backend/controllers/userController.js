@@ -1,9 +1,8 @@
 // Nombre del archivo original: userController.js
-const db = require('../config/db');
+const db = require('../config/db'); // Importación correcta
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
-// Controlador para iniciar sesión
 const loginUser = (req, res) => {
   const { email, password } = req.body;
 
@@ -13,9 +12,15 @@ const loginUser = (req, res) => {
 
   const query = `SELECT * FROM Personas WHERE email = ?`;
 
+  // Asegurando que db.query esté definido
+  if (!db || typeof db.query !== 'function') {
+    console.error('Error en la conexión a la base de datos');
+    return res.status(500).json({ message: 'Error interno del servidor' });
+  }
+
   db.query(query, [email], (err, results) => {
     if (err) {
-      console.error('Error al consultar la base de datos:', err);
+      console.error('Error al consultar la base de datos:', err.message);
       return res.status(500).json({ message: 'Error interno del servidor' });
     }
 
@@ -25,17 +30,12 @@ const loginUser = (req, res) => {
 
     const user = results[0];
 
-    // Verificar la contraseña
     bcrypt.compare(password, user.password, (err, isMatch) => {
       if (err || !isMatch) {
         return res.status(400).json({ message: 'Email o contraseña incorrectos' });
       }
 
-      // Crear un token JWT
-      const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, {
-        expiresIn: '1h',
-      });
-
+      const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, { expiresIn: '1h' });
       res.json({ token, user: { id: user.id, email: user.email } });
     });
   });
