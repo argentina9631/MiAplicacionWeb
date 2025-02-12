@@ -10,8 +10,8 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 8080;
 
-// Configurar CORS
-const allowedOrigins = ['http://localhost:3000', 'https://miaplicacionweb.vercel.app'];
+// Configurar CORS usando variable de entorno para mayor flexibilidad
+const allowedOrigins = [process.env.CLIENT_URL, 'http://localhost:3000'];
 app.use(
   cors({
     origin: function (origin, callback) {
@@ -37,4 +37,3 @@ app.use('/api/users', userRoutes);
 app.listen(PORT, () => {
   console.log(`Servidor corriendo en el puerto ${PORT}`);
 });
-

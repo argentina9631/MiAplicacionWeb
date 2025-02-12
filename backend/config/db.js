@@ -1,5 +1,4 @@
 // backend/config/db.js
-// db.js
 const mysql = require('mysql2/promise');
 const dotenv = require('dotenv');
 
@@ -16,6 +15,12 @@ const connectDB = async () => {
     });
     console.log(`✅ Conectado a la base de datos: ${process.env.MYSQL_ADDON_DB}`);
     global.dbConnection = connection;
+
+    // Manejo de errores de conexión
+    connection.on('error', (err) => {
+      console.error('❌ Error en la conexión a la base de datos:', err.message);
+      process.exit(1);
+    });
   } catch (error) {
     console.error('❌ Error al conectar a la base de datos:', error.message);
     process.exit(1);
@@ -23,4 +28,3 @@ const connectDB = async () => {
 };
 
 module.exports = { connectDB };
-

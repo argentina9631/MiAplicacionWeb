@@ -17,6 +17,9 @@ const protect = (req, res, next) => {
     req.user = decoded;
     next();
   } catch (error) {
+    if (error.name === 'TokenExpiredError') {
+      return res.status(401).json({ message: 'Token expirado' });
+    }
     res.status(400).json({ message: 'Token inválido' });
   }
 };
