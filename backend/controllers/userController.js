@@ -1,40 +1,54 @@
-// backend/controllers/userController.js
-const bcrypt = require('bcryptjs');
+// userController.js
 const jwt = require('jsonwebtoken');
-const db = require('../config/db');
+const bcrypt = require('bcrypt');
+const dotenv = require('dotenv');
+const { pool } = require('../config/db'); // Asegúrate de tener la conexión de la base de datos aquí
 
-// Controlador para el login
+dotenv.config();
+
 const loginUser = async (req, res) => {
   const { email, password } = req.body;
 
   if (!email || !password) {
-    return res.status(400).json({ message: 'Faltan campos requeridos' });
+    return res.status(400).json({ message: 'Email y contraseña son requeridos' });
   }
 
   try {
-    // Consulta al campo correcto en la tabla Personas
-    const query = 'SELECT * FROM Personas INNER JOIN Usuarios ON Personas.id = Usuarios.personaId WHERE Personas.email = ?';
-    const [rows] = await db.query(query, [email]);
+    const [rows] = await pool.query('SELECT * FROM Usuarios WHERE email = ?', [email]);
 
     if (rows.length === 0) {
       return res.status(400).json({ message: 'Email o contraseña incorrectos' });
     }
 
     const user = rows[0];
-    const isMatch = await bcrypt.compare(password, user.password);
+    const isPasswordCorrect = await bcrypt.compare(password, user.password);
 
-    if (!isMatch) {
+    if (!isPasswordCorrect) {
       return res.status(400).json({ message: 'Email o contraseña incorrectos' });
     }
 
-    const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, { expiresIn: '1h' });
+    const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET, { expiresIn: '1h' });
 
-    res.json({ token, user: { id: user.id, email: user.email } });
+    res.json({ token });
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: 'Error interno del servidor' });
+    console.error('Error en login:', error);
+    res.status(500).json({ message: 'Error en el servidor' });
   }
 };
 
-// Resto del controlador omitido para mantener esto legible
-module.exports = { loginUser };
+const verifyToken = (req, res) => {
+  const token = req.headers['authorization'];
+
+  if (!token) {
+    return res.status(403).json({ message: 'Token requerido' });
+  }
+
+  jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
+    if (err) {
+      return res.status(401).json({ message: 'Token inválido' });
+    }
+    res.json({ message: 'Token verificado', userId: decoded.userId });
+  });
+};
+
+module.exports = { loginUser, verifyToken };

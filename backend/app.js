@@ -1,28 +1,40 @@
 // backend/app.js
 const express = require('express');
-const morgan = require('morgan');
+const dotenv = require('dotenv');
+const cors = require('cors');
 const userRoutes = require('./routes/userRoutes');
-const connectDB = require('./config/db'); // Importar la función correctamente
-require('dotenv').config();
+const { connectDB } = require('./config/db');
+
+dotenv.config();
 
 const app = express();
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 8080;
+
+// Configurar CORS
+const allowedOrigins = ['http://localhost:3000', 'https://miaplicacionweb.vercel.app'];
+app.use(
+  cors({
+    origin: function (origin, callback) {
+      if (allowedOrigins.includes(origin) || !origin) {
+        callback(null, true);
+      } else {
+        callback(new Error('Not allowed by CORS'));
+      }
+    },
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    credentials: true,
+  })
+);
+
+app.use(express.json());
 
 // Conectar a la base de datos
-connectDB(); // Llamar a la función para establecer la conexión
-
-// Middleware
-app.use(express.json());
-app.use(morgan('dev')); // Logs detallados en desarrollo
+connectDB();
 
 // Rutas
 app.use('/api/users', userRoutes);
 
-// Manejo de errores generales
-app.use((err, req, res, next) => {
-  console.error(err.stack);
-  res.status(500).json({ message: 'Error interno del servidor' });
+app.listen(PORT, () => {
+  console.log(`Servidor corriendo en el puerto ${PORT}`);
 });
 
-// Iniciar servidor
-app.listen(PORT, () => console.log(`Servidor corriendo en el puerto ${PORT}`));
