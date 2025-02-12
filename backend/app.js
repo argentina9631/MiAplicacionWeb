@@ -1,23 +1,28 @@
 // backend/app.js
-
 const express = require('express');
-const cors = require('cors');
-require('dotenv').config();
+const morgan = require('morgan');
 const userRoutes = require('./routes/userRoutes');
+const connectDB = require('./config/db');
+require('dotenv').config();
 
 const app = express();
+const PORT = process.env.PORT || 5000;
 
-app.use(cors());
+// Conectar a la base de datos
+connectDB();
+
+// Middleware
 app.use(express.json());
+app.use(morgan('dev')); // Logs detallados en desarrollo
 
+// Rutas
 app.use('/api/users', userRoutes);
 
-// Ruta raíz para comprobar que el servidor está corriendo
-app.get('/', (req, res) => {
-    res.json({ message: 'Servidor funcionando correctamente' });
+// Manejo de errores generales
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).json({ message: 'Error interno del servidor' });
 });
 
-const PORT = process.env.PORT || 8080;
-app.listen(PORT, () => {
-    console.log(`Servidor corriendo en el puerto ${PORT}`);
-});
+// Iniciar servidor
+app.listen(PORT, () => console.log(`Servidor corriendo en el puerto ${PORT}`));

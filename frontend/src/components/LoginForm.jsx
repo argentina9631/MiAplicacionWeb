@@ -1,25 +1,25 @@
 // frontend/src/components/LoginForm.jsx
 import React, { useState } from "react";
-import api from '../api';
+import useAuth from "../hooks/useAuth";
 import "./LoginForm.css";
 
 const LoginForm = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState(null);
+    const { login } = useAuth(); // Usar la función login del hook
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         setError(null);
 
         try {
-            const response = await api.post("/api/users/login", { email, password });
-            console.log("Token recibido:", response.data.token);
-            localStorage.setItem("token", response.data.token); // Guarda el token
+            await login(email, password); // Llamar a la función login
             alert("Inicio de sesión exitoso");
+            window.location.href = "/"; // Redirigir después de iniciar sesión
         } catch (error) {
-            console.error("Error en login:", error.response?.data || error.message);
-            setError(error.response?.data?.error || "Error al conectar con el servidor");
+            console.error("Error en login:", error.message);
+            setError(error.message);
         }
     };
 
@@ -31,12 +31,24 @@ const LoginForm = () => {
             <form className="login-form" onSubmit={handleSubmit}>
                 <div className="form-group">
                     <label htmlFor="email">Email:</label>
-                    <input type="email" id="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
+                    <input
+                        type="email"
+                        id="email"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        required
+                    />
                 </div>
 
                 <div className="form-group">
                     <label htmlFor="password">Contraseña:</label>
-                    <input type="password" id="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
+                    <input
+                        type="password"
+                        id="password"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        required
+                    />
                 </div>
 
                 <button type="submit">Login</button>
