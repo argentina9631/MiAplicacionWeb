@@ -1,24 +1,22 @@
-// Nombre del archivo original: db.js
 const mysql = require('mysql2');
 const dotenv = require('dotenv');
 
-// Cargar las variables de entorno
 dotenv.config();
 
+// Conexión utilizando las variables de entorno de Clever Cloud
 const connection = mysql.createConnection({
-  host: process.env.DB_HOST,
-  user: process.env.DB_USER,
-  password: process.env.DB_PASSWORD,
-  database: process.env.DB_NAME,
-  port: process.env.DB_PORT || 3306,
+  host: process.env.MYSQL_ADDON_HOST,
+  user: process.env.MYSQL_ADDON_USER,
+  password: process.env.MYSQL_ADDON_PASSWORD,
+  database: process.env.MYSQL_ADDON_DB,
+  port: process.env.MYSQL_ADDON_PORT,
 });
 
 connection.connect((err) => {
   if (err) {
-    console.error('Error al conectar con la base de datos:', err.message);
-    process.exit(1); // Detener la ejecución si no se puede conectar
+    console.error('Error al conectar con la base de datos:', err);
   } else {
-    console.log(`✅ Conectado a la base de datos: ${process.env.DB_NAME}`);
+    console.log('Conexión exitosa a la base de datos');
   }
 });
 
