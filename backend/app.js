@@ -2,52 +2,43 @@
 const express = require('express');
 const cors = require('cors');
 const dotenv = require('dotenv');
-const db = require('./config/db'); // Asegurar conexión con la base de datos
-const userRoutes = require('./routes/userRoutes');
+const db = require('./config/db'); // Asegurando la conexión de la base de datos
 
 dotenv.config();
 
 const app = express();
 
-// Conectar a la base de datos
-db.connect((err) => {
-  if (err) {
-    console.error('Error al conectar la base de datos:', err);
-    process.exit(1);
-  } else {
-    console.log('Conexión a la base de datos establecida');
-  }
-});
-
 // Middleware para analizar JSON
 app.use(express.json());
 
 // Configuración de CORS
-const allowedOrigins = [process.env.CLIENT_URL || 'http://localhost:3000'];
+const allowedOrigins = [
+  process.env.CLIENT_URL || 'http://localhost:3000',
+  'https://miaplicacionweb.vercel.app'
+];
+
 app.use(
   cors({
-    origin: allowedOrigins,
+    origin: function (origin, callback) {
+      // Permitir solicitudes sin origen (por ejemplo, desde herramientas o scripts)
+      if (!origin) return callback(null, true);
+      if (allowedOrigins.indexOf(origin) === -1) {
+        const msg = `El origen ${origin} no está permitido por la política de CORS.`;
+        return callback(new Error(msg), false);
+      }
+      return callback(null, true);
+    },
     credentials: true,
   })
 );
 
 // Rutas
+const userRoutes = require('./routes/userRoutes');
 app.use('/api/users', userRoutes);
 
 // Ruta raíz para evitar errores 404 en producción
 app.get('/', (req, res) => {
   res.send('API en funcionamiento');
-});
-
-// Manejo de errores 404
-app.use((req, res, next) => {
-  res.status(404).json({ message: 'Ruta no encontrada' });
-});
-
-// Middleware de manejo de errores global
-app.use((err, req, res, next) => {
-  console.error('Error interno del servidor:', err);
-  res.status(500).json({ message: 'Error interno del servidor' });
 });
 
 // Puerto del servidor
