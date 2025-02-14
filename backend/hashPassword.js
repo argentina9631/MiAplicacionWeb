@@ -1,3 +1,4 @@
+//backend/hashPassword.js
 const bcrypt = require('bcryptjs');
 
 // Cambia esta contraseña por la que quieras hashear

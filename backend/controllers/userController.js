@@ -1,4 +1,4 @@
-// Nombre del archivo original: userController.js
+//backend/controllers/userController.js
 const db = require('../config/db'); // Importación correcta
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');

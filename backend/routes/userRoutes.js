@@ -1,4 +1,4 @@
-// Nombre del archivo original: userRoutes.js
+//backend/routes/userRoutes.js
 const express = require('express');
 const { loginUser } = require('../controllers/userController');
 

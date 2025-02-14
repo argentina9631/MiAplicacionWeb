@@ -1,5 +1,4 @@
-// Nombre del archivo original: app.js
-
+//backend/app.js
 const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');

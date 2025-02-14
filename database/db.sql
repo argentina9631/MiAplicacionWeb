@@ -1,3 +1,4 @@
+#database/db.sql
 CREATE DATABASE IF NOT EXISTS db_miaplicacionweb;
 
 USE db_miaplicacionweb;

@@ -1,3 +1,4 @@
+#database/datos.sql
 INSERT INTO Roles (nombre) VALUES ('Administrador'), ('Usuario');
 
 INSERT INTO Personas (nombre, email) VALUES ('Juan Pérez', 'juan@example.com');
