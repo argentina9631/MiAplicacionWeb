@@ -7,19 +7,20 @@ const LoginForm = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState(null);
-    const { login } = useAuth(); // Usar la función login del hook
+    const { login } = useAuth();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         setError(null);
+        console.log("Enviando datos de login:", { email, password });
 
         try {
-            await login(email, password); // Llamar a la función login
+            await login(email, password);
             alert("Inicio de sesión exitoso");
-            window.location.href = "/"; // Redirigir después de iniciar sesión
+            window.location.href = "/";
         } catch (error) {
-            console.error("Error en login:", error.message);
-            setError(error.message);
+            console.error("Error en login:", error);
+            setError(error.message || "Error desconocido al iniciar sesión");
         }
     };
 

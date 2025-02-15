@@ -9,11 +9,18 @@ const useAuth = () => {
   useEffect(() => {
     const token = localStorage.getItem('token');
     if (token) {
+      console.log("Verificando token...");
       api.get('/api/users/verify', {
         headers: { Authorization: `Bearer ${token}` }
       })
-      .then(response => setUser(response.data.user))
-      .catch(() => localStorage.removeItem('token'))
+      .then(response => {
+        console.log("Usuario verificado:", response.data.user);
+        setUser(response.data.user);
+      })
+      .catch(error => {
+        console.error("Error al verificar el token:", error);
+        localStorage.removeItem('token');
+      })
       .finally(() => setLoading(false));
     } else {
       setLoading(false);
@@ -21,17 +28,20 @@ const useAuth = () => {
   }, []);
 
   const login = async (email, password) => {
+    console.log("Iniciando sesión con:", { email });
     try {
       const response = await api.post('/api/users/login', { email, password });
+      console.log("Respuesta de login:", response.data);
       localStorage.setItem('token', response.data.token);
       setUser(response.data.user);
     } catch (error) {
-      console.error('Error en login:', error.message);
-      throw new Error('Error al iniciar sesión');
+      console.error('Error en login:', error);
+      throw new Error(error.response?.data?.message || 'Error al iniciar sesión');
     }
   };
 
   const logout = () => {
+    console.log("Cerrando sesión");
     localStorage.removeItem('token');
     setUser(null);
   };
