@@ -1,12 +1,12 @@
-// backend/app.js
 const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
 const db = require('./config/db');
 const dotenv = require('dotenv');
+const personRoutes = require('./routes/personRoutes'); // Nueva ruta para manejar personas
 
 dotenv.config();
-const app = express();
+const app = express(); // Mover esta línea aquí
 
 // Middleware
 app.use(bodyParser.json());
@@ -33,6 +33,7 @@ app.use(cors(corsOptions));
 // Rutas
 const userRoutes = require('./routes/userRoutes');
 app.use('/api/users', userRoutes);
+app.use('/api/personas', personRoutes); // Nueva ruta para personas
 
 // Conectar a la base de datos
 try {
