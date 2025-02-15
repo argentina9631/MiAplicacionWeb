@@ -12,7 +12,7 @@ const loginUser = async (req, res) => {
 
   try {
     const query = 'SELECT * FROM Personas WHERE email = ?';
-    const [results] = await db.promise().query(query, [email]);
+    const [results] = await db.query(query, [email]);
 
     if (results.length === 0) {
       return res.status(400).json({ message: 'Email o contraseña incorrectos' });

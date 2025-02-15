@@ -10,7 +10,7 @@ const useAuth = () => {
         const token = localStorage.getItem('token');
         if (token) {
             api.get('/api/users/verify', {
-                headers: { Authorization: token }
+                headers: { Authorization: `Bearer ${token}` } // Asegurar el formato correcto del token
             })
             .then(response => {
                 setUser(response.data.user);
@@ -25,9 +25,14 @@ const useAuth = () => {
     }, []);
 
     const login = async (email, password) => {
-        const response = await api.post('/api/users/login', { email, password });
-        localStorage.setItem('token', response.data.token);
-        setUser(response.data.user);
+        try {
+            const response = await api.post('/api/users/login', { email, password });
+            localStorage.setItem('token', response.data.token);
+            setUser(response.data.user);
+        } catch (error) {
+            console.error('Error en login:', error.message);
+            throw new Error('Error al iniciar sesión');
+        }
     };
 
     const logout = () => {

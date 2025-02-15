@@ -1,24 +1,22 @@
 // backend/config/db.js
-const mysql = require('mysql2');
+const mysql = require('mysql2/promise');
 const dotenv = require('dotenv');
 
 dotenv.config();
 
-const connection = mysql.createConnection({
+const pool = mysql.createPool({
   host: process.env.MYSQL_ADDON_HOST,
   user: process.env.MYSQL_ADDON_USER,
   password: process.env.MYSQL_ADDON_PASSWORD,
   database: process.env.MYSQL_ADDON_DB,
   port: process.env.MYSQL_ADDON_PORT,
-  multipleStatements: true, // Mejora para realizar consultas complejas
+  waitForConnections: true,
+  connectionLimit: 10, // Limitar el número de conexiones
+  queueLimit: 0,
 });
 
-connection.connect((err) => {
-  if (err) {
-    console.error('Error al conectar con la base de datos:', err);
-  } else {
-    console.log('Conexión exitosa a la base de datos');
-  }
-});
+pool.getConnection()
+  .then(() => console.log('Conexión exitosa a la base de datos'))
+  .catch((err) => console.error('Error al conectar con la base de datos:', err));
 
-module.exports = connection;
+module.exports = pool;
