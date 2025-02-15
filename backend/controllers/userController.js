@@ -1,5 +1,5 @@
-//backend/controllers/userController.js
-const db = require('../config/db'); // Importación correcta
+// backend/controllers/userController.js
+const db = require('../config/db');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
@@ -10,13 +10,7 @@ const loginUser = (req, res) => {
     return res.status(400).json({ message: 'Todos los campos son obligatorios' });
   }
 
-  const query = `SELECT * FROM Personas WHERE email = ?`;
-
-  // Asegurando que db.query esté definido
-  if (!db || typeof db.query !== 'function') {
-    console.error('Error en la conexión a la base de datos');
-    return res.status(500).json({ message: 'Error interno del servidor' });
-  }
+  const query = 'SELECT * FROM Personas WHERE email = ?';
 
   db.query(query, [email], (err, results) => {
     if (err) {

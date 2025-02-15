@@ -1,8 +1,8 @@
-//backend/app.js
+// backend/app.js
 const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
-const db = require('./config/db'); // Asegúrate de que este archivo exista y esté configurado correctamente
+const db = require('./config/db');
 
 const app = express();
 
@@ -11,8 +11,8 @@ app.use(bodyParser.json());
 
 // Configurar CORS
 const allowedOrigins = [
-  'http://localhost:3000', // Frontend en desarrollo
-  'https://miaplicacionweb.vercel.app' // Dominio en producción
+  'http://localhost:3000',
+  'https://miaplicacionweb.vercel.app'
 ];
 
 const corsOptions = {
@@ -23,7 +23,7 @@ const corsOptions = {
       callback(new Error('El origen no está permitido por la política de CORS.'));
     }
   },
-  credentials: true, // Permitir envío de cookies si es necesario
+  credentials: true,
 };
 
 app.use(cors(corsOptions));
@@ -43,8 +43,6 @@ db.connect((err) => {
 
 // Configurar el puerto
 const PORT = process.env.PORT || 8080;
-
-// Iniciar el servidor
 app.listen(PORT, () => {
   console.log(`Servidor corriendo en el puerto ${PORT}`);
 });

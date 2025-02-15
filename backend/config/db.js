@@ -1,10 +1,9 @@
-//backend/config/db.js
+// backend/config/db.js
 const mysql = require('mysql2');
 const dotenv = require('dotenv');
 
 dotenv.config();
 
-// Conexión utilizando las variables de entorno de Clever Cloud
 const connection = mysql.createConnection({
   host: process.env.MYSQL_ADDON_HOST,
   user: process.env.MYSQL_ADDON_USER,
