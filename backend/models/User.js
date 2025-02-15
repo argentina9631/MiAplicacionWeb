@@ -10,7 +10,7 @@ const User = {
         INNER JOIN Usuarios u ON p.idPersona = u.idPersona 
         WHERE p.email = ?
       `;
-      const [rows] = await pool.query(query, [email]);
+      const [rows] = await pool.promise().query(query, [email]);
 
       if (rows.length === 0) {
         return null;

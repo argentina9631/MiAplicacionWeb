@@ -10,6 +10,7 @@ const connection = mysql.createConnection({
   password: process.env.MYSQL_ADDON_PASSWORD,
   database: process.env.MYSQL_ADDON_DB,
   port: process.env.MYSQL_ADDON_PORT,
+  multipleStatements: true, // Mejora para realizar consultas complejas
 });
 
 connection.connect((err) => {
