@@ -10,7 +10,7 @@ const User = {
         INNER JOIN Usuarios u ON p.idPersona = u.idPersona 
         WHERE p.email = ?
       `;
-      const [rows] = await pool.promise().query(query, [email]);
+      const [rows] = await pool.query(query, [email]);
 
       if (rows.length === 0) {
         return null;
@@ -18,7 +18,7 @@ const User = {
 
       return rows[0];
     } catch (error) {
-      console.error(`❌ Error en findByEmail: ${error.message}`);
+      console.error(`Error en findByEmail: ${error.message}`);
       throw new Error('Error al buscar usuario por email');
     }
   }

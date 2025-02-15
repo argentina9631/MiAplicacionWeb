@@ -1,3 +1,4 @@
+// backend/app.js
 const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
@@ -6,7 +7,7 @@ const dotenv = require('dotenv');
 const personRoutes = require('./routes/personRoutes'); // Nueva ruta para manejar personas
 
 dotenv.config();
-const app = express(); // Mover esta línea aquí
+const app = express();
 
 // Middleware
 app.use(bodyParser.json());
@@ -36,17 +37,14 @@ app.use('/api/users', userRoutes);
 app.use('/api/personas', personRoutes); // Nueva ruta para personas
 
 // Conectar a la base de datos
-try {
-  db.connect((err) => {
-    if (err) {
-      console.error('Error al conectar a la base de datos:', err);
-    } else {
-      console.log('Conexión exitosa a la base de datos');
-    }
-  });
-} catch (error) {
-  console.error('Error al iniciar la aplicación:', error.message);
-}
+(async () => {
+  try {
+    await db.getConnection();
+    console.log('Conexión exitosa a la base de datos');
+  } catch (error) {
+    console.error('Error al conectar a la base de datos:', error);
+  }
+})();
 
 // Configurar el puerto
 const PORT = process.env.PORT || 8080;
