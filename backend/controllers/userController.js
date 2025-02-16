@@ -28,6 +28,7 @@ const loginUser = async (req, res) => {
     const token = jwt.sign({ id: user.id, email: user.email }, process.env.JWT_SECRET, { expiresIn: '1h' });
     res.json({ token, user: { id: user.id, email: user.email } });
   } catch (err) {
+    console.error('Error interno del servidor:', err);
     res.status(500).json({ message: 'Error interno del servidor' });
   }
 };
