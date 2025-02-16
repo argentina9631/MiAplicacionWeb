@@ -1,6 +1,6 @@
 // frontend/src/hooks/useAuth.js
 import { useState, useEffect } from 'react';
-import axios from 'axios';
+import api from '../api';
 
 const useAuth = () => {
   const [user, setUser] = useState(null);
@@ -10,7 +10,7 @@ const useAuth = () => {
     const token = localStorage.getItem('token');
     if (token) {
       console.log("Verificando token...");
-      axios.get('/api/users/verify', {
+      api.get('/api/users/verify', {
         headers: { Authorization: `Bearer ${token}` }
       })
       .then(response => {
@@ -30,7 +30,7 @@ const useAuth = () => {
   const login = async (email, password) => {
     console.log("Iniciando sesión con:", { email });
     try {
-      const response = await axios.post('/api/users/login', { email, password });
+      const response = await api.post('/api/users/login', { email, password });
       console.log("Respuesta de login:", response.data);
       localStorage.setItem('token', response.data.token);
       setUser(response.data.user);
