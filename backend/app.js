@@ -1,52 +1,31 @@
 // backend/app.js
 const express = require('express');
 const cors = require('cors');
-const bodyParser = require('body-parser');
-const db = require('./config/db');
-const dotenv = require('dotenv');
-const personRoutes = require('./routes/personRoutes'); // Nueva ruta para manejar personas
-
-dotenv.config();
 const app = express();
+const userRoutes = require('./routes/userRoutes');
+const personRoutes = require('./routes/personRoutes');
+require('./config/db'); // Asegurar que la base de datos esté conectada
 
-// Middleware
-app.use(bodyParser.json());
+// Configuración de CORS
+app.use(cors({
+  origin: process.env.CLIENT_URL || 'http://localhost:3000', // URL del cliente, por defecto localhost para desarrollo
+  credentials: true, // Si necesitas enviar cookies o encabezados de autenticación
+}));
 
-// Configurar CORS
-const allowedOrigins = [
-  'http://localhost:3000',
-  process.env.CLIENT_URL
-];
-
-const corsOptions = {
-  origin: function (origin, callback) {
-    if (!origin || allowedOrigins.includes(origin)) {
-      callback(null, true);
-    } else {
-      callback(new Error('El origen no está permitido por la política de CORS.'));
-    }
-  },
-  credentials: true,
-};
-
-app.use(cors(corsOptions));
+// Middleware para parsear JSON
+app.use(express.json());
 
 // Rutas
-const userRoutes = require('./routes/userRoutes');
 app.use('/api/users', userRoutes);
-app.use('/api/personas', personRoutes); // Nueva ruta para personas
+app.use('/api/personas', personRoutes);
 
-// Conectar a la base de datos
-(async () => {
-  try {
-    await db.getConnection();
-    console.log('Conexión exitosa a la base de datos');
-  } catch (error) {
-    console.error('Error al conectar a la base de datos:', error);
-  }
-})();
+// Control de errores genéricos
+app.use((err, req, res, next) => {
+  console.error('Error interno del servidor:', err.message); // Mejor visibilidad del error
+  res.status(500).json({ message: 'Error interno del servidor' });
+});
 
-// Configurar el puerto
+// Escuchar en el puerto configurado
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {
   console.log(`Servidor corriendo en el puerto ${PORT}`);
