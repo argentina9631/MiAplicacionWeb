@@ -1,4 +1,4 @@
-// frontend/src/hooks/useAuth.js
+// la ruta es frontend/src/hooks/useAuth.js
 import { useState, useEffect } from 'react';
 import api from '../api';
 
