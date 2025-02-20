@@ -8,7 +8,7 @@ function App() {
 
     return (
         <div>
-            <h1>Bienvenido a Mi Aplicación Web</h1>
+            
             {user ? (
                 <div>
                     <h2>Hola, {user.name}</h2>
