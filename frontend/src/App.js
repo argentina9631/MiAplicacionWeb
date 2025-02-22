@@ -1,7 +1,9 @@
+//frontend/src/App.js
 import React from "react";
 import useAuth from "./hooks/useAuth"; // Importar el hook
 import LoginForm from "./components/LoginForm";
 import PersonasList from './components/PersonasList'; // Ruta ajustada según tu estructura
+import "./App.css";
 
 function App() {
     const { user, logout } = useAuth(); // Usar el usuario y logout del hook
@@ -18,6 +20,7 @@ function App() {
             ) : (
                 <LoginForm />
             )}
+            <p className="created-by">Creado por Pablo Rivero</p> {/* Texto agregado */}
         </div>
     );
 }
