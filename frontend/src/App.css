@@ -47,7 +47,7 @@ button:hover {
 
 .created-by {
   margin-top: 10px;
-  font-size: 3rem;
+  font-size: 2rem;
   color: rgb(0, 0, 0);
   padding: 8px 12px;
   background-color: rgba(238, 229, 229, 0.6); /* Fondo oscuro translúcido */
@@ -58,21 +58,7 @@ button:hover {
   position: absolute; /* Asegura que no se superponga */
   left: 50%;
   transform: translateX(-50%);
-  bottom: -40px; /* Ajusta la distancia desde abajo */
+  bottom: 0px; /* Ajusta la distancia desde abajo */
   font-weight: 550;
 }
 
-/*lo siguiente hace q no se hagan los cambios de arriba*/
-@media (max-width: 600px) { /* Para celulares */
-  .created-by {
-    font-size: 6vw;
-    bottom: 5vh;
-  }
-}
-
-@media (min-width: 1024px) { /* Para pantallas grandes */
-  .created-by {
-    font-size: 2vw;
-    bottom: 2vh;
-  }
-}
