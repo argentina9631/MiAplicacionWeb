@@ -62,10 +62,18 @@ button:hover {
   font-weight: 550;
 }
 
-body {
-  background-image: url('/public/imagen1login.webp');
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  min-height: 100vh;
+/*lo siguiente hace q no se hagan los cambios de arriba*/
+@media (max-width: 600px) { /* Para celulares */
+  .created-by {
+    font-size: 6vw;
+    bottom: 5vh;
+  }
 }
+
+@media (min-width: 1024px) { /* Para pantallas grandes */
+  .created-by {
+    font-size: 2vw;
+    bottom: 2vh;
+  }
+}
+
