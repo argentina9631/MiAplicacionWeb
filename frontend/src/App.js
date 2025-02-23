@@ -20,7 +20,7 @@ function App() {
             ) : (
                 <LoginForm />
             )}
-            <p className="created-by">Creado por Pablo Rivero</p> {/* Texto agregado */}
+            <p className="created-by">Creado por A1B1</p> {/* Texto agregado */}
         </div>
     );
 }
