@@ -2,14 +2,14 @@
 import React, { useState } from "react";
 import useAuth from "../hooks/useAuth";
 import "./LoginForm.css";
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom'; // Cambio aquí
 
 const LoginForm = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
   const { login } = useAuth();
-  const history = useHistory();
+  const navigate = useNavigate(); // Cambio aquí
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -19,7 +19,7 @@ const LoginForm = () => {
     try {
       await login(email, password);
       alert("Inicio de sesión exitoso");
-      history.push("/"); // Redirigir al usuario a la página principal
+      navigate("/"); // Redirigir al usuario a la página principal
     } catch (error) {
       console.error("Error en login:", error);
       setError(error.message || "Error desconocido al iniciar sesión");
