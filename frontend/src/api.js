@@ -1,3 +1,4 @@
+// frontend/src/api.js
 import axios from 'axios';
 
 // Definir la URL base del backend desde las variables de entorno
@@ -10,10 +11,5 @@ const api = axios.create({
     'Content-Type': 'application/json'
   }
 });
-
-// Ejemplo de prueba para obtener personas
-api.get('/personas')
-  .then(response => console.log(response.data))
-  .catch(error => console.error('Error al obtener personas:', error));
 
 export default api;

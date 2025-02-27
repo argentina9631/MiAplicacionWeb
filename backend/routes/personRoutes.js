@@ -1,4 +1,4 @@
-//backend/routes/personRoutes
+// backend/routes/personRoutes.js
 const express = require('express');
 const router = express.Router();
 
