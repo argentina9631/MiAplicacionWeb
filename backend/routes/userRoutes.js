@@ -18,7 +18,7 @@ router.get('/verify', (req, res) => {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
     res.json({ user: { id_usuario: decoded.id_usuario, email: decoded.email } });
   } catch (error) {
-    res.status(401).json({ message: 'Token inválido' });
+    res.status(401).json({ message: 'Token inválido o expirado' });
   }
 });
 

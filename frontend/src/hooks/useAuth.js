@@ -33,6 +33,7 @@ const useAuth = () => {
       throw new Error(error.response?.data?.message || 'Error al iniciar sesión');
     }
   };
+  
 
   const logout = () => {
     localStorage.removeItem('token');
