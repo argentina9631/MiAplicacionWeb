@@ -4,6 +4,7 @@ const express = require('express');
 const cors = require('cors');
 const db = require('./config/db');
 const userRoutes = require('./routes/userRoutes');
+const personRoutes = require('./routes/personRoutes'); // Importar rutas de personas
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -26,6 +27,11 @@ app.use(cors({
 
 app.use(express.json());
 
+// Ruta raíz para comprobar que el backend funciona
+app.get('/', (req, res) => {
+  res.send('Bienvenido a la API de MiAplicacionWeb');
+});
+
 // Verificar la conexión a MySQL
 db.getConnection()
   .then(connection => {
@@ -38,6 +44,7 @@ db.getConnection()
 
 // Rutas
 app.use('/api/users', userRoutes);
+app.use('/api/personas', personRoutes); // Agregar rutas de personas
 
 app.listen(port, () => {
   console.log(`Servidor escuchando en el puerto ${port}`);
