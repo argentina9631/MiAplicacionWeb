@@ -1,15 +1,13 @@
 // frontend/src/api.js
 import axios from 'axios';
 
-// Definir la URL base del backend desde las variables de entorno
-const API_URL = process.env.REACT_APP_BACKEND_URL || 'http://localhost:3000/api';
+const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:3000';
 
-// Crear instancia de axios con configuración base
 const api = axios.create({
-  baseURL: API_URL,
+  baseURL: API_BASE_URL,
   headers: {
-    'Content-Type': 'application/json'
-  }
+    'Content-Type': 'application/json',
+  },
 });
 
 export default api;

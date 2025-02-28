@@ -1,14 +1,12 @@
 // backend/routes/userRoutes.js
 const express = require('express');
-const { loginUser } = require('../controllers/userController');
 const jwt = require('jsonwebtoken');
+const { loginUser } = require('../controllers/userController');
+
 const router = express.Router();
 
-// Ruta para iniciar sesión
-router.post('/login', loginUser);
-
-// Ruta para verificar el token
-router.get('/verify', (req, res) => {
+// Middleware para verificar el token
+const verifyToken = (req, res, next) => {
   const token = req.headers.authorization?.split(' ')[1];
   if (!token) {
     return res.status(401).json({ message: 'Token no proporcionado' });
@@ -16,10 +14,19 @@ router.get('/verify', (req, res) => {
 
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    res.json({ user: { id_usuario: decoded.id_usuario, email: decoded.email } });
+    req.user = decoded;
+    next();
   } catch (error) {
-    res.status(401).json({ message: 'Token inválido o expirado' });
+    return res.status(401).json({ message: 'Token inválido o expirado' });
   }
+};
+
+// Ruta para iniciar sesión
+router.post('/login', loginUser);
+
+// Ruta protegida para verificar sesión
+router.get('/verify', verifyToken, (req, res) => {
+  res.json({ user: req.user });
 });
 
 module.exports = router;

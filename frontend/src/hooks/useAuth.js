@@ -26,13 +26,14 @@ const useAuth = () => {
 
   const login = async (email, password) => {
     try {
-      const response = await api.post('/users/login', { email, password });
+      const response = await api.post('/api/users/login', { email, password });
       localStorage.setItem('token', response.data.token);
       setUser(response.data.user);
     } catch (error) {
       throw new Error(error.response?.data?.message || 'Error al iniciar sesión');
     }
   };
+  
   
 
   const logout = () => {
