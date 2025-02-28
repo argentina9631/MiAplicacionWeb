@@ -17,7 +17,8 @@ const loginUser = async (req, res) => {
       INNER JOIN Usuarios u ON p.id_persona = u.id_persona 
       WHERE p.email = ?`;
 
-    const [results] = await db.query(query, [email]);
+      const [results] = await db.query(query, [email]);
+      console.log("Resultados de la consulta:", results);      
 
     if (results.length === 0) {
       return res.status(401).json({ message: 'Email o contraseña incorrectos' });

@@ -9,7 +9,7 @@ const useAuth = () => {
   useEffect(() => {
     const token = localStorage.getItem('token');
     if (token) {
-      api.get('/users/verify', {
+      api.get('/api/users/verify', {
         headers: { Authorization: `Bearer ${token}` }
       })
       .then(response => {
@@ -26,7 +26,7 @@ const useAuth = () => {
 
   const login = async (email, password) => {
     try {
-      const response = await api.post('/users/login', { email, password });
+      const response = await api.post('/api/users/login', { email, password });
       localStorage.setItem('token', response.data.token);
       setUser(response.data.user);
     } catch (error) {
