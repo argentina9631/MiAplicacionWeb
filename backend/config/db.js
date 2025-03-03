@@ -8,7 +8,7 @@ const connection = mysql.createConnection({
   database: 'b8biz3pozkccjo4cgtlo',//localmente es 'db_miaplicacionweb'
   port:'3306',//localmente no va esta linea
   waitForConnections: true,
-  connectionLimit: 10,
+  connectionLimit: 5,
   queueLimit: 0
 });
 
