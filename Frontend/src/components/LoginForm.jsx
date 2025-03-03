@@ -1,3 +1,4 @@
+//frontend/src/components/LoginForm.jsx
 import React, { useState } from "react";
 import "./LoginForm.css";
 
@@ -11,7 +12,6 @@ const LoginForm = () => {
     setError(null);
 
     try {
-      // Cambié la URL para que coincida con la del backend
       const response = await fetch("http://localhost:3000/api/users/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -23,7 +23,7 @@ const LoginForm = () => {
         setError(data.error || "Error desconocido");
       } else {
         alert("Inicio de sesión exitoso");
-        console.log("Token:", data.token);
+        console.log("Token:", data.token || "No recibido");
       }
     } catch (error) {
       setError("Error al conectar con el servidor");
