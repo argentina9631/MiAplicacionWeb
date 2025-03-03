@@ -1,21 +1,16 @@
-const bcrypt = require('bcrypt');
-const mysql = require('mysql');
-const connection = require('../config/db'); // Conexión a la base de datos
-const crypto = require('crypto'); // Para el hash de contraseñas SHA-256
+// backend/controllers/userController.js
+const crypto = require('crypto');
+const connection = require('../config/db');
 
-// Función para login de usuario
 const login = (req, res) => {
-  console.log("Request body:", req.body);  // Verificar que el cuerpo de la solicitud esté llegando
+  console.log("Request body:", req.body);
   const { email, password } = req.body;
 
   if (!email || !password) {
     return res.status(400).json({ error: 'Email y contraseña son obligatorios' });
   }
 
-  const query = 'SELECT u.id_usuario, u.nombre_usuario, u.contrasena_hash, p.id_persona, p.nombre_persona, p.email ' +
-                'FROM Usuarios u ' +
-                'JOIN Personas p ON u.id_persona = p.id_persona ' +
-                'WHERE p.email = ?';
+  const query = 'SELECT u.id_usuario, u.nombre_usuario, u.contrasena_hash, p.id_persona, p.nombre_persona, p.email FROM Usuarios u JOIN Personas p ON u.id_persona = p.id_persona WHERE p.email = ?';
 
   connection.query(query, [email], (err, result) => {
     if (err) {
@@ -28,8 +23,6 @@ const login = (req, res) => {
     }
 
     const user = result[0];
-
-    // Generar el hash de la contraseña ingresada con SHA-256
     const hash = crypto.createHash('sha256').update(password).digest('hex');
 
     if (hash !== user.contrasena_hash) {
@@ -40,7 +33,4 @@ const login = (req, res) => {
   });
 };
 
-// Exportar las funciones correctamente
-module.exports = {
-  login,  // Asegúrate de que "login" esté aquí
-};
+module.exports = { login };
