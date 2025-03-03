@@ -1,4 +1,7 @@
+<<<<<<< HEAD
 # MiAplicacionWeb/.gitignore
+=======
+>>>>>>> 2master2
 # Ignorar dependencias de Node.js
 node_modules/
 
