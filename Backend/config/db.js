@@ -2,11 +2,11 @@
 const mysql = require('mysql2');
 
 const connection = mysql.createConnection({
-  host: 'b8biz3pozkccjo4cgtlo-mysql.services.clever-cloud.com', //localmente es 'localhost'
-  user: 'umjqezvfshle1hsn',//localmente es 'root'
-  password: 'Jk4asxYTAhD8hd367zgo',//localmente es '9631argentina'
-  database: 'b8biz3pozkccjo4cgtlo',//localmente es 'db_miaplicacionweb'
-  port:'3306',//localmente no va esta linea
+  host: process.env.DB_HOST || 'localhost',  // Usar variable de entorno o localhost
+  user: process.env.DB_USER || 'root',  // Usar variable de entorno o 'root' localmente
+  password: process.env.DB_PASSWORD || '9631argentina',  // Usar variable de entorno o contraseña local
+  database: process.env.DB_NAME || 'db_miaplicacionweb',  // Usar variable de entorno o base de datos local
+  port: process.env.DB_PORT || 3306,  // Usar variable de entorno o puerto local
   waitForConnections: true,
   connectionLimit: 5,
   queueLimit: 0
