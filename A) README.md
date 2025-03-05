@@ -1,4 +1,4 @@
-PROYECTO http://localhost:3001/
+PROYECTO http://localhost:3000/ http://localhost:3000/ https://miaplicacionweb.vercel.app/
 ---------------------------------------------------------------------------------
 INICIALIZAR BACKEND CON:
 
@@ -15,7 +15,4 @@ GITHUB(stage,commit y push)
 cd C:\Users\MULTI\source\repos\MiAplicacionWeb
 git add .
 git commit -m "Mensaje que describe los cambios realizados"
-----
-git checkout -b <nombre-de-la-rama>
-git push origin <nombre-de-la-rama>
----------------------------------------------------------------------------------
+git push origin master
