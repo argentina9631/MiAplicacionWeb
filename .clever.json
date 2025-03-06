@@ -6,7 +6,10 @@
       "deploy_url": "https://github.com/argentina9631/MiAplicacionWeb.git",
       "git_ssh_url": "https://github.com/argentina9631/MiAplicacionWeb.git",
       "name": "MiAplicacionWeb",
-      "alias": "MiAplicacionWeb"
+      "alias": "MiAplicacionWeb",
+      "env": {
+        "NODE_VERSION": "18"
+      }
     }
   ]
 }
