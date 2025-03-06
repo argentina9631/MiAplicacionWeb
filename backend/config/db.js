@@ -1,6 +1,6 @@
 //backend/config/db.js
-require('dotenv').config();
 const mysql = require('mysql2');
+require('dotenv').config(); // Cargar variables de entorno
 
 const connection = mysql.createConnection({
   host: process.env.MYSQL_ADDON_HOST, //|| 'localhost',   Usar variable de entorno o localhost
