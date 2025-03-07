@@ -2,7 +2,7 @@
     "name": "miaplicacionweb-root",
     "private": true,
     "scripts": {
-      "start": "cd backend && npm start && node app.js"
+      "start": "cd backend && npm start"
     }
   }
   

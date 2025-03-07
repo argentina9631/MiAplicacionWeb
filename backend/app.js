@@ -7,6 +7,18 @@ require('dotenv').config(); // Cargar variables de entorno
 
 const app = express();
 
+//temporal
+const db = require('./config/db');
+
+db.query('SELECT 1', (err, results) => {
+  if (err) {
+    console.error('Error al conectar a MySQL desde el backend:', err);
+  } else {
+    console.log('Conexión a MySQL exitosa desde el backend.');
+  }
+});
+//
+
 app.use(cors());  // Permitir solicitudes desde otros orígenes
 app.use(bodyParser.json());  // Analizar cuerpos JSON
 
