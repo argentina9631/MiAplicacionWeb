@@ -4,7 +4,7 @@ const connection = require('../config/db');
 
 const login = (req, res) => {
   console.log("Solicitud recibida en /login:", req.body);  // Agregar esto para depurar
-  console.log("Request body:", req.body);
+ // console.log("Request body:", req.body);
   const { email, password } = req.body;
 
   if (!email || !password) {
