@@ -3,8 +3,7 @@ const crypto = require('crypto');
 const connection = require('../config/db');
 
 const login = (req, res) => {
-  console.log("Solicitud recibida en /login:", req.body);  // Agregar esto para depurar
- // console.log("Request body:", req.body);
+  console.log("Request body:", req.body);
   const { email, password } = req.body;
 
   if (!email || !password) {
@@ -15,7 +14,7 @@ const login = (req, res) => {
 
   connection.query(query, [email], (err, result) => {
     if (err) {
-      console.error('Error en la consulta SQL:', err);
+      console.error('Error en la consulta:', err);
       return res.status(500).json({ error: 'Error al consultar el usuario' });
     }
 
