@@ -1,5 +1,5 @@
 // backend/controllers/userController.js
-const crypto = require('crypto');
+const bcrypt = require('bcryptjs');
 const connection = require('../config/db');
 
 const login = (req, res) => {
@@ -23,11 +23,17 @@ const login = (req, res) => {
     }
 
     const user = result[0];
-    const hash = crypto.createHash('sha256').update(password).digest('hex');
-
-    if (hash !== user.contrasena_hash) {
-      return res.status(400).json({ error: 'Email o contraseña incorrectos' });
-    }
+    bcrypt.compare(password, user.contrasena_hash, (err, result) => {
+      if (err) {
+        console.error('Error al comparar la contraseña:', err);
+        return res.status(500).json({ error: 'Error en el servidor' });
+      }
+      if (!result) {
+        return res.status(400).json({ error: 'Email o contraseña incorrectos' });
+      }
+      res.status(200).json({ message: 'Login exitoso', user });
+    });
+    
 
     res.status(200).json({ message: 'Login exitoso', user });
   });
