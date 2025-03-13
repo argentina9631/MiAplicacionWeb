@@ -1,5 +1,5 @@
 // backend/controllers/userController.js
-const bcrypt = require('bcryptjs');
+const crypto = require('crypto');
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
 require('dotenv').config();
@@ -16,8 +16,9 @@ exports.login = async (req, res) => {
             return res.status(401).json({ message: 'Credenciales inválidas' });
         }
 
-        const isMatch = await bcrypt.compare(password, user.contrasena_hash);
-        if (!isMatch) {
+        // Convertir la contraseña ingresada a SHA-256
+        const hash = crypto.createHash('sha256').update(password).digest('hex');
+        if (hash !== user.contrasena_hash) {
             return res.status(401).json({ message: 'Credenciales inválidas' });
         }
 
