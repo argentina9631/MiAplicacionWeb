@@ -1,42 +1,27 @@
 // backend/controllers/userController.js
 const bcrypt = require('bcryptjs');
-const connection = require('../config/db');
+const jwt = require('jsonwebtoken');
+const User = require('../models/User');
+require('dotenv').config();
 
-const login = (req, res) => {
-  console.log("Request body:", req.body);
-  const { email, password } = req.body;
-
-  if (!email || !password) {
-    return res.status(400).json({ error: 'Email y contraseña son obligatorios' });
-  }
-
-  const query = 'SELECT u.id_usuario, u.nombre_usuario, u.contrasena_hash, p.id_persona, p.nombre_persona, p.email FROM Usuarios u JOIN Personas p ON u.id_persona = p.id_persona WHERE p.email = ?';
-
-  connection.query(query, [email], (err, result) => {
-    if (err) {
-      console.error('Error en la consulta:', err);
-      return res.status(500).json({ error: 'Error al consultar el usuario' });
+exports.login = async (req, res) => {
+    try {
+        const { email, password } = req.body;
+        const [users] = await User.findByEmail(email);
+        if (users.length === 0) {
+            return res.status(400).json({ message: 'Usuario no encontrado' });
+        }
+        const user = users[0];
+        
+        const isMatch = await bcrypt.compare(password, user.password);
+        if (!isMatch) {
+            return res.status(400).json({ message: 'Contraseña incorrecta' });
+        }
+        
+        const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, { expiresIn: '1h' });
+        res.status(200).json({ message: 'Login exitoso', token, user });
+    } catch (error) {
+        console.error('Error en login:', error);
+        res.status(500).json({ message: 'Error en el servidor' });
     }
-
-    if (result.length === 0) {
-      return res.status(400).json({ error: 'Email o contraseña incorrectos' });
-    }
-
-    const user = result[0];
-    bcrypt.compare(password, user.contrasena_hash, (err, result) => {
-      if (err) {
-        console.error('Error al comparar la contraseña:', err);
-        return res.status(500).json({ error: 'Error en el servidor' });
-      }
-      if (!result) {
-        return res.status(400).json({ error: 'Email o contraseña incorrectos' });
-      }
-      res.status(200).json({ message: 'Login exitoso', user });
-    });
-    
-
-    res.status(200).json({ message: 'Login exitoso', user });
-  });
 };
-
-module.exports = { login };
