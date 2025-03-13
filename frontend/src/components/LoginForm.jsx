@@ -17,10 +17,14 @@ const LoginForm = () => {
 
     try {
       const data = await login(email, password); // Llama a la función login de auth.js
-      console.log("Token recibido:", data.token);
-      localStorage.setItem("token", data.token);
-      alert("Inicio de sesión exitoso");
-      navigate("/"); // Redirige a la página principal después de login
+      if (data && data.token) {
+        console.log("Token recibido:", data.token);
+        localStorage.setItem("token", data.token);
+        alert("Inicio de sesión exitoso");
+        navigate("/"); // Redirige a la página principal después de login
+      } else {
+        throw new Error("Respuesta del servidor inválida");
+      }
     } catch (error) {
       console.error("Error en login:", error);
       setError(error.message || "Error desconocido al iniciar sesión");
