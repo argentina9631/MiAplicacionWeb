@@ -1,7 +1,7 @@
 // frontend/src/api/auth.js
 import axios from 'axios';
 
-const API_URL = process.env.REACT_APP_BACKEND_URL || 'http://localhost:3000';
+const API_URL = process.env.REACT_APP_BACKEND_URL || 'http://localhost:8080/api/users';
 
 export const login = async (email, password) => {
     try {

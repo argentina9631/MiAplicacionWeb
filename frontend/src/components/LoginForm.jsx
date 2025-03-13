@@ -2,6 +2,7 @@
 import React, { useState } from "react";
 import "./LoginForm.css";
 import { useNavigate } from 'react-router-dom';
+import { login } from '../api/auth'; // Importa la función de login desde auth.js
 
 const LoginForm = () => {
   const [email, setEmail] = useState("");
@@ -15,21 +16,11 @@ const LoginForm = () => {
     console.log("Enviando datos de login:", { email, password });
 
     try {
-      const response = await fetch(`https://app-e1cc2c91-dfc6-49c5-8a1c-6a1907e248e3.cleverapps.io/api/users/login`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password })
-      });
-      
-      if (!response.ok) {
-        throw new Error("Credenciales inválidas");
-      }
-
-      const data = await response.json();
+      const data = await login(email, password); // Llama a la función login de auth.js
       console.log("Token recibido:", data.token);
       localStorage.setItem("token", data.token);
       alert("Inicio de sesión exitoso");
-      navigate("/");
+      navigate("/"); // Redirige a la página principal después de login
     } catch (error) {
       console.error("Error en login:", error);
       setError(error.message || "Error desconocido al iniciar sesión");
